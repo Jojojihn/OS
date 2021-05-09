@@ -27,6 +27,9 @@ class Program : public UIListItem {
         ///Loops while running = true. Set running to false to stop the loop.
         virtual void loop() = 0;
 
+    private:
+        Program();
+
 
 };
 

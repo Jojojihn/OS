@@ -17,6 +17,9 @@
 
 
 
+
+
+
 //----------- Pin assignments ---------------
 const byte COLS = 4;
 const byte ROWS = 4;
@@ -109,6 +112,7 @@ const char *const programDescs[] PROGMEM = {
 //-------------------------------------------
 
 //------------ Runtime variables ------------
+bool debug = false;
 byte mainMenuSelected = 0;
 boolean isRunning = false;
 String opened = "Main_Menu";
@@ -138,8 +142,6 @@ KeypadInputDevice *keypadInputDevice = new KeypadInputDevice(makeKeymap(keys), r
 
 
 //-------------------------------------------
-
-
 char inputKey() {
   decode_results results;
   char key = keypad.getKey();
@@ -1353,6 +1355,7 @@ void setupInput() {
   for(unsigned int i = 0; i < (sizeof(codes) / sizeof(codes[0])); i++) {
     irInputDevice->addMap(codes[i], keyValues[i]);
   }
+
   
   Input::addInputDevice(irInputDevice);
   Input::addInputDevice(keypadInputDevice);
@@ -1379,19 +1382,20 @@ void setupInput() {
     ->addMapping(keypadInputDevice, '5');
 
   Input::addAction("back")
-    ->addMapping(irInputDevice, '#')
-    ->addMapping(keypadInputDevice, '#');
-  
-  Input::addAction("shutdown")
     ->addMapping(irInputDevice, '*')
     ->addMapping(keypadInputDevice, '*');
 
+  
+  Input::addAction("shutdown")
+    ->addMapping(irInputDevice, '#')
+    ->addMapping(keypadInputDevice, '#');
+
+  
+  Serial.println("Input setup complete.");
 }
 
 void setup() {
-  setupInput();
   
-
   for (int i = 0; i < 3; i++) {
     pinMode(RGBleds[i], OUTPUT);
     digitalWrite(RGBleds[i], LOW);
@@ -1414,6 +1418,7 @@ void setup() {
   //const int eepromGroups[eepromGroupsSz] {8, 3};
   //const int eepromConfig[][3];// = {{0,1,8}, {9,10,12}}; {CheckByte, DataStartByte, DataEndByte}
 
+  setupInput();
 
   setupEepromConfig(true); //Formats the address assignments into eepromConfig  //true for debug printing
   if (restoreData) {
