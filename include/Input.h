@@ -89,7 +89,7 @@ class IRrecvInputDevice : public InputDevice {
 
 
 /**
- * An Input action. Can store a maximum of 3 different associated characters. 
+ * An Input action.
  */
 struct Action {
     public:
