@@ -17,7 +17,7 @@ class InputDevice {
 
 class KeypadInputDevice : public InputDevice {
     private:
-        ///A Pointer to the keypad used.
+        ///The keypad used.
         Keypad keypad;
 
         KeypadInputDevice();
@@ -47,7 +47,7 @@ class IRrecvInputDevice : public InputDevice {
             char character;
         };
 
-        ///A Pointer to the IR receiver used.
+        ///The IR receiver used.
         IRrecv irReceiver;
 
         ///List of IR code to char mappings
