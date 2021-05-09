@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/39669932/117589939-31ad0780-b12d-11eb-847f-7675a70e860f.png)
 # OS - An Operating System for Arduino (ATMega2560)
-  Developed and maintained by [@Jojojihn](github.com/Jojojihn) and [@Jatoxo](github.com/Jatoxo)
+  Developed and maintained by [@Jojojihn](github.com/Jojojihn) and [@Jatoxo](github.com/Jatoxo), written using [PlatformIO](github.com/platformio)
   
 ## Features
 * Support for two LCD displays
