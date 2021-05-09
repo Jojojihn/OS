@@ -21,7 +21,8 @@ void OwOProgram::loop() {
         delay(1);
         liquidCrystal2->print(F("UwU"));
         liquidCrystal->print(F("UwU"));
-        delay(1);
-    }   
+        delay(50);
+    }  
+    running = false;
 }
 

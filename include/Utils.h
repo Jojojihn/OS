@@ -71,7 +71,7 @@ class List {
             index = max(0, index);
             if((unsigned int) index < length) {
                 temp = head;
-
+   
                 for(int i = 0; i < index; i++) {
                     temp = temp->getNext();
                 }
@@ -82,6 +82,10 @@ class List {
     
     public:
         List() : head(nullptr), length(0) {};
+
+        ~List() {
+            clear(false);
+        }
 
         /**
          * Gets a pointer to the object at the specified index.
@@ -99,11 +103,14 @@ class List {
          * @param object Pointer to an object in the heap (Initialize with new! Otherwise the object might get removed once it leaves the current scope)
          */
         void add(T *object) {
-            ListElem<T>* lastElem = getElem(length - 1);
-
             ListElem<T> *newElem = new ListElem<T>(object);
-            lastElem->setNext(newElem);
-
+            if(length <= 0) {
+                head = newElem;
+            } else {
+                ListElem<T>* lastElem = getElem(length - 1);
+                lastElem->setNext(newElem);
+            }
+        
             length++;
         }
 
@@ -157,6 +164,7 @@ class List {
             for(int i = length-1; i >= 0; i--) {
                 remove(get(i), deleteObjects);
             }
+            length = 0;
         }
 
         /**

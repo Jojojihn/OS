@@ -10,9 +10,25 @@
 
 class InputDevice {
     public:
-        virtual char getKey() = 0;
-
+        /**
+         * Polls the input device
+         * 
+         * @return The key that was polled
+         */
+        char getKey();
+        
+        /**
+         * @return The key that was last polled (using getKey)
+         */
+        char getLastKey();
+        
+        InputDevice();
         virtual ~InputDevice();
+
+    private:
+        char lastPolled;
+
+        virtual char _getKey() = 0;
 };
 
 class KeypadInputDevice : public InputDevice {
@@ -21,13 +37,14 @@ class KeypadInputDevice : public InputDevice {
         Keypad keypad;
 
         KeypadInputDevice();
-    public:
-        KeypadInputDevice(char *userKeymap, byte *row, byte *col, byte numRows, byte numCols);
 
         /**
          * @return The last key that was pressed, if it is still pressed
          */
-        char getKey() override;
+        char _getKey() override;
+
+    public:
+        KeypadInputDevice(char *userKeymap, byte *row, byte *col, byte numRows, byte numCols);
 
         /**
          * @returns A Pointer to the underlying Keypad object that this Input Device is using
@@ -55,6 +72,11 @@ class IRrecvInputDevice : public InputDevice {
 
         IRrecvInputDevice();
 
+        /**
+         * @return The last key that was pressed, if it has not yet been read
+         */
+        char _getKey() override;
+
     public:
         /**
          * Instantiates this IR receiver Input Device.
@@ -62,11 +84,6 @@ class IRrecvInputDevice : public InputDevice {
          * @param recvPin Arduino pin to use. No sanity check is made
          */
         IRrecvInputDevice(unsigned int recvPin);
-
-        /**
-         * @return The last key that was pressed, if it has not yet been read
-         */
-        char getKey() override;
 
         /**
          * Maps an IR code to a key (character) that this device can return. If a mapping to the same code already exists, it will be overwritten.
@@ -93,14 +110,17 @@ class IRrecvInputDevice : public InputDevice {
  */
 struct Action {
     public:
-        Action(String tag);
+        Action(char* tag);
+
+        ~Action();
 
         struct DeviceKeyMap {
             InputDevice* device;
             char key;
         };
 
-        String tag;
+        ///The tag of this action
+        char* tag;
 
         /**
          * Adds an input mapping to this Action. 
@@ -151,7 +171,7 @@ class Input {
          * 
          * @return True when the action is pressed. If the action is not pressed or not found, false.
          */
-        static bool isActionJustPressed(String tag);
+        static bool isActionJustPressed(const char* tag);
         
         /**
          * Adds an input device
@@ -179,7 +199,7 @@ class Input {
          * 
          * @return The Action, or nullptr if the action wasn't found
          */
-        static Action *getAction(String tag);
+        static Action *getAction(const char* tag);
 
         /**
          * Adds an Action.
@@ -188,14 +208,14 @@ class Input {
          * 
          * @return The created Action, or the existing Action if it already existed. This can be used to add mappings inline.
          */
-        static Action *addAction(String tag);
+        static Action *addAction(const char* tag);
 
         /**
          * Removes the action with the specified tag.
          * 
          * @param tag The tag of the action to remove
          */
-        static void removeAction(String tag);
+        static void removeAction(const char* tag);
 
 
     private:
