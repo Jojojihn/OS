@@ -28,7 +28,9 @@ Keypad *KeypadInputDevice::getKeypad() {
 
 
 
-IRrecvInputDevice::IRrecvInputDevice(unsigned int recvPin) : irReceiver(IRrecv(recvPin)), mappings(List<CodeMap>()) {}
+IRrecvInputDevice::IRrecvInputDevice(unsigned int recvPin) : irReceiver(IRrecv(recvPin)), mappings(List<CodeMap>()) {
+    irReceiver.enableIRIn();
+}
 
 void IRrecvInputDevice::addMap(unsigned long int code, char key) {
     CodeMap *newMap = new CodeMap {code, key};
@@ -50,15 +52,15 @@ char IRrecvInputDevice::_getKey() {
             CodeMap *cMap = mappings.get(i);
 
             if(cMap->code == results.value) {
+                irReceiver.resume();
                 return cMap->character;
-     
             }
         }
-
+        irReceiver.resume();
         return '\0';
 
     }
-
+    irReceiver.resume();
     return '\0';
 }
 

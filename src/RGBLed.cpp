@@ -5,6 +5,10 @@ RGBLed::RGBLed(byte r, byte g, byte b) {
     pinMode(g, OUTPUT);
     pinMode(b, OUTPUT);
 
+    digitalWrite(r, LOW);
+    digitalWrite(g, LOW);
+    digitalWrite(b, LOW);
+
     pinsRGB[0] = r;
     pinsRGB[1] = g;
     pinsRGB[2] = b;
