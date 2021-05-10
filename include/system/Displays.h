@@ -6,6 +6,7 @@
 #include "List.h"
 #include "Utils.h"
 #include "LiquidCrystal.h"
+#include "LiquidCrystal_I2C.h"
 
 /**
  * A generic LcdDisplay.
@@ -56,6 +57,7 @@ class LcdDisplay : public Print {
         LcdDisplay();
 };
 
+
 /**
  * An LcdDisplay using LiquidCrystal
  */
@@ -88,6 +90,7 @@ class LiquidCrystalDisplay : public LcdDisplay {
          */
         void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
+
         void createChar(uint8_t location, uint8_t charmap[]) override;
 
         virtual size_t write(uint8_t);
@@ -102,6 +105,49 @@ class LiquidCrystalDisplay : public LcdDisplay {
         LiquidCrystalDisplay();
 
         LiquidCrystal lcd;
+
+};
+
+/**
+ * An LcdDisplay using LiquidCrystal
+ */
+class LiquidCrystalDisplay_I2C : public LcdDisplay {
+    public:
+        LiquidCrystalDisplay_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows);
+
+  
+        /**
+         * @return A Pointer to the underlying LiquidCrystal_I2C that this object is using.
+         */
+        LiquidCrystal_I2C *getLcd();
+
+        /**
+         * Inits the display. Call this once before you can use the display.
+         */
+        void init();
+
+        /**
+         * Turns on or off the backlight.
+         * 
+         * @param enable Whether the backlight should be set to on or off
+         */
+        void setBacklightEnabled(bool enable);
+
+
+        void createChar(uint8_t location, uint8_t charmap[]) override;
+
+        virtual size_t write(uint8_t);
+
+        void setCursor(uint8_t x, uint8_t y) override;
+
+        void clear() override;
+
+
+
+    private:
+        LiquidCrystalDisplay_I2C();
+
+        LiquidCrystal_I2C lcd;
 
 };
 

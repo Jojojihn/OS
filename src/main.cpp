@@ -131,7 +131,7 @@ int programMenuListPos[] = {0, 0};
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 LiquidCrystalDisplay lcd(22, 23, 24, 25, 26, 27);
-LiquidCrystal_I2C lcd2(0x27, 16, 2);
+LiquidCrystalDisplay_I2C lcd2(0x27, 16, 2);
 IRrecv irrecv(IRPin);
 BigNumbers bigNum(lcd.getLcd());
 RGBLed rgbLed = RGBLed(RGBleds[0], RGBleds[1], RGBleds[2]);
@@ -277,7 +277,7 @@ void bootup() {
   lcd.write(byte(6));
   lcd.write(byte(7));
   delay(10);
-  lcd2.backlight();
+  lcd2.setBacklightEnabled(true);
   for (int i = 0; i < 20; i++) {
     lcd.setCursor(i, 0);
     lcd.print("-");
@@ -663,7 +663,7 @@ void shutDown() {
   lcd2.clear();
   if (selOption) {
     isRunning = false;
-    lcd2.noBacklight();
+    lcd2.setBacklightEnabled(false);
   } else {
     opened = "Main_Menu";
     loadMainMenu();
@@ -1385,9 +1385,11 @@ void setupInput() {
 
 void setupDisplays() {
   lcd.begin(20, 4);
-  lcd.clear();
   Displays::setPrimaryDisplay(&lcd);
 
+  lcd2.init();
+  lcd2.setBacklightEnabled(false);
+  Displays::setSecondaryDisplay(&lcd2);
   
 
 
@@ -1399,10 +1401,7 @@ void setup() {
   pinMode(2, OUTPUT);
 
   setupDisplays();
-  lcd2.init();
-  lcd2.noBacklight();
-
-  lcd2.clear();
+  
   delay(40);
   Serial.begin(9600);
   //Serial.print("EEPROM address 0 holds: ");

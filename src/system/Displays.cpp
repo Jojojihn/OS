@@ -49,6 +49,7 @@ LiquidCrystal *LiquidCrystalDisplay::getLcd() {
 void LiquidCrystalDisplay::begin(uint8_t cols, uint8_t rows, uint8_t charsize) {
     size = Vector2(cols, rows);
     lcd.begin(cols, rows, charsize);
+    lcd.clear();
 }
 
 void LiquidCrystalDisplay::createChar(uint8_t location, uint8_t charmap[]) {
@@ -70,6 +71,39 @@ void LiquidCrystalDisplay::clear() {
 
 
 
+LiquidCrystalDisplay_I2C::LiquidCrystalDisplay_I2C(uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows) :
+    LcdDisplay(lcd_cols, lcd_rows),
+    lcd(LiquidCrystal_I2C(lcd_Addr, lcd_cols, lcd_rows)) {}
+
+
+LiquidCrystal_I2C *LiquidCrystalDisplay_I2C::getLcd() {
+    return &lcd;
+}
+
+void LiquidCrystalDisplay_I2C::init() {
+    lcd.init();
+    lcd.clear();
+}
+
+void LiquidCrystalDisplay_I2C::setBacklightEnabled(bool enabled) {
+    enabled ? lcd.backlight() : lcd.noBacklight();
+}
+
+void LiquidCrystalDisplay_I2C::createChar(uint8_t location, uint8_t charmap[]) {
+    lcd.createChar(location, charmap);
+}
+
+inline size_t LiquidCrystalDisplay_I2C::write(uint8_t value) {
+  return lcd.write(value); 
+}
+
+void LiquidCrystalDisplay_I2C::setCursor(uint8_t x, uint8_t y) {
+    lcd.setCursor(x, y);
+}
+
+void LiquidCrystalDisplay_I2C::clear() {
+    lcd.clear();
+}
 
 
 
