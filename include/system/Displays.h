@@ -109,7 +109,7 @@ class LiquidCrystalDisplay : public LcdDisplay {
 };
 
 /**
- * An LcdDisplay using LiquidCrystal
+ * An LcdDisplay using LiquidCrystal_I2C
  */
 class LiquidCrystalDisplay_I2C : public LcdDisplay {
     public:
