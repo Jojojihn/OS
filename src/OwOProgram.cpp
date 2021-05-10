@@ -3,24 +3,21 @@
 
 
 
-OwOProgram::OwOProgram(LiquidCrystal* x, LiquidCrystal_I2C* y) : Program(F("OwO The Game"), F("UwU")) {
-    liquidCrystal = x;
-    liquidCrystal2 = y;
+OwOProgram::OwOProgram() :
+    Program(F("OwO The Game"), F("UwU")) {}
 
-    i = 0;
-}
 
-void OwOProgram::listOnSelect() {
-    liquidCrystal2->print(description);
-}
 
 void OwOProgram::loop() {
+    LcdDisplay *lcd = Displays::getPrimaryDisplay();
+    LcdDisplay *lcd2 = Displays::getSecondaryDisplay();
+
     while(!Input::isActionJustPressed("back")) {
-        liquidCrystal2->print(F("OwO"));
-        liquidCrystal->print(F("OwO"));
+        lcd2->print(F("OwO"));
+        lcd->print(F("OwO"));
         delay(1);
-        liquidCrystal2->print(F("UwU"));
-        liquidCrystal->print(F("UwU"));
+        lcd2->print(F("UwU"));
+        lcd->print(F("UwU"));
         delay(50);
     }  
     running = false;

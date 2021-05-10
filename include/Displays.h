@@ -8,7 +8,7 @@
 #include "LiquidCrystal.h"
 
 
-class LcdDisplay {
+class LcdDisplay : public Print {
     public:
         virtual ~LcdDisplay();
 
@@ -19,11 +19,6 @@ class LcdDisplay {
 
 
         /**
-         * @param string Print something to the display
-         */
-        virtual void print(const String string) = 0;
-
-        /**
          * Creates a character on the displays memory.
          * 
          * @param location The location in memory at which to store the character
@@ -32,12 +27,9 @@ class LcdDisplay {
          */
         virtual void createChar(uint8_t location, uint8_t charmap[]) = 0;
 
-        /**
-         * Prints a character from memory to a location. If the character in memory changes the printed character will too.
-         * 
-         * @param value The location in memory of the character to write to the display
-         */
-        virtual void write(uint8_t value) = 0;
+        
+        virtual size_t write(uint8_t value) = 0;
+        using Print::write;
 
         /**
          * Sets the cursor the the specified position
@@ -92,12 +84,9 @@ class LiquidCrystalDisplay : public LcdDisplay {
          */
         void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
-
-        void print(const String string) override;
-
         void createChar(uint8_t location, uint8_t charmap[]) override;
 
-        void write(uint8_t value) override;
+        virtual size_t write(uint8_t);
 
         void setCursor(uint8_t x, uint8_t y) override;
 

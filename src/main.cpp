@@ -1235,7 +1235,7 @@ void rgbLedConfigurator() {
 
 
 //------------------------------------------------------------------------------------- \DRAW/ -------------------------------------------------------------------------------------
-void refreshCursor(int cursorPos[], boolean curBlink, LiquidCrystal lcd) {
+void refreshCursor(int cursorPos[], boolean curBlink, LiquidCrystal *lcd) {
   lcd.setCursor(cursorPos[0], cursorPos[1] / 2);
   if (curBlink) { //shouldn't just overwrite anything
     lcd.write(byte(1));
@@ -1244,7 +1244,7 @@ void refreshCursor(int cursorPos[], boolean curBlink, LiquidCrystal lcd) {
   }
 }
 
-void draw(LiquidCrystal lcd, const int displaySize[]) { //A quick and simple drawing program without any extra features
+void draw(LiquidCrystal *lcd, const int displaySize[]) { //A quick and simple drawing program without any extra features
   byte characters[][8] = {{B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000}, {B11111, B11111, B11111, B11111, B11111, B11111, B11111, B11111}, {B00000, B00000, B00000, B00000, B11111, B11111, B11111, B11111},
     {B11111, B11111, B11111, B11111, B00000, B00000, B00000, B00000}
   };
@@ -1256,11 +1256,11 @@ void draw(LiquidCrystal lcd, const int displaySize[]) { //A quick and simple dra
 
   int blinkDelay = 500;
 
-  lcd.clear();
-  lcd.createChar(0 , characters[0]);
-  lcd.createChar(1, characters[1]);
-  lcd.createChar(2, characters[2]);
-  lcd.createChar(3, characters[3]);
+  lcd->clear();
+  lcd->createChar(0 , characters[0]);
+  lcd->createChar(1, characters[1]);
+  lcd->createChar(2, characters[2]);
+  lcd->createChar(3, characters[3]);
   for (int i = 0; i < displaySize[0] * 2; i++) {
     for (int ii = 0; ii < displaySize[1]; ii++) {
       drawing += String(ii) + "," + String(i) + "b" + "0" ;
@@ -1274,8 +1274,8 @@ void draw(LiquidCrystal lcd, const int displaySize[]) { //A quick and simple dra
       lastMillis = millis();
     }
     if (curKey == keyUp || curKey == keyDown || curKey == keyLeft || curKey == keyRight) {
-      lcd.setCursor(cursorPos[0], cursorPos[1] / 2); //Shouldn't just clear the character
-      lcd.print(" ");
+      lcd->setCursor(cursorPos[0], cursorPos[1] / 2); //Shouldn't just clear the character
+      lcd->print(" ");
       lcd2.setCursor(0, 0);
       if (curKey == keyUp) {
         if (cursorPos[1] > 0) {
@@ -1332,7 +1332,7 @@ void owo() {
       return;
     }
   }
-  OwOProgram(&lcd, &lcd2).start();
+  //OwOProgram(&lcd, &lcd2).start();
 }
 
 void setupInput() {
@@ -1689,7 +1689,7 @@ void loop() {
             lcd2.clear();
             lcd2.setCursor(0, 0);
             lcd2.print(F("Draw"));
-            draw(lcd, displayPrimarySize);
+            draw(lcd.getLcd(), displayPrimarySize);
             break;
           case 8:
             //function program 8

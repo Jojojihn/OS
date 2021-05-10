@@ -39,8 +39,8 @@ void LiquidCrystalDisplay::createChar(uint8_t location, uint8_t charmap[]) {
     lcd.createChar(location, charmap);
 }
 
-void LiquidCrystalDisplay::write(uint8_t value) {
-    lcd.write(value);
+inline size_t LiquidCrystalDisplay::write(uint8_t value) {
+  return lcd.write(value); 
 }
 
 void LiquidCrystalDisplay::setCursor(uint8_t x, uint8_t y) {

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "UIListItem.h"
+#include "Displays.h"
 
 class Program : public UIListItem {
     public:
@@ -19,6 +20,8 @@ class Program : public UIListItem {
 
         //Start this program
         void start();
+
+        virtual void listOnSelect() override;
 
     
         Program(String name, String description);
