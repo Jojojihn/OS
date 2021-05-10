@@ -12,8 +12,10 @@ class UIListItem {
         String listTitle;
 
     protected:
+        UIListItem();
+
         ///Called when this item becomes highlighted in the list.
-        virtual void listOnSelect() = 0;
+        virtual void listOnSelect();
 };
 
 
