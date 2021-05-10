@@ -1,4 +1,4 @@
-#include "Program.h"
+#include "programs/Program.h"
 
 
 Program::Program(String name, String description) : name(name), description(description), running(false) {

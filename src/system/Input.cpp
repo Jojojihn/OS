@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "system/Input.h"
 #define logD(a) (Serial.println(a))
 
 InputDevice::InputDevice() : lastPolled('\0') {}

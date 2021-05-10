@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 #include "Program.h"
-#include "Input.h"
+#include "system/Input.h"
 
 
 class OwOProgram : public Program {

@@ -10,11 +10,14 @@
 #include <EEPROM.h>
 
 
-#include "Input.h"
+#include "system/Input.h"
+#include "system/Displays.h"
+
 #include "RGBLed.h"
 #include "Utils.h"
-#include "OwOProgram.h"
-#include "Displays.h"
+
+#include "programs/OwOProgram.h"
+
 
 
 
@@ -1321,7 +1324,7 @@ void draw(LiquidCrystal *lcd, const int displaySize[]) { //A quick and simple dr
 
 
 void setupInput() {
-  
+
   long unsigned int codes[] = {
       16738455, 16724175, 16718055, 16743045,
       16716015, 16726215, 16734885, 16728765,
