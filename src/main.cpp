@@ -678,7 +678,7 @@ void shutDown() {
 
 
 //------------------------------------------------------------------------------------ \LISTS/ -------------------------------------------------------------------------------------
-void refresh(int pos, int selected, String elements[], int elementCount, String values[], boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int ret[]) { //pos is a value between 0 and elementCount-1;
+void refresh(int pos, int selected, String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int ret[]) { //pos is a value between 0 and elementCount-1;
   String displayed[displaySize[0]];
   //int ret[];
 
@@ -702,24 +702,24 @@ void refresh(int pos, int selected, String elements[], int elementCount, String 
     ret[i] = ii;
   }
   for (int i = 0; i < displaySize[0]; i++) { //For every row in display
-    lcd.setCursor(0, i);
+    lcd->setCursor(0, i);
     for (int ii = 0; ii < displaySize[1] - 3; ii++) { //margin
-      lcd.print(" "); //Clear the entire row
+      lcd->print(" "); //Clear the entire row
     }
-    lcd.setCursor(0, i);
+    lcd->setCursor(0, i);
     if (displayed[i].length() > displaySize[1] - 3) { //margin  //If the String meant for this line is longer than the display allows
       String temp = displayed[i];
       temp.remove(displaySize[1] - 3); //Cut it down to the allowed length (3 characters shorter than the display)
-      lcd.print(temp);  //margin
+      lcd->print(temp);  //margin
     } else {
-      lcd.print(displayed[i]); //Just print it if it fits
+      lcd->print(displayed[i]); //Just print it if it fits
     }
     if (i == selected) { //If the current row is selected
-      lcd.setCursor(displaySize[1] - 1, i);
-      lcd.print("<"); //Put the cursor at the end of the line and print it
+      lcd->setCursor(displaySize[1] - 1, i);
+      lcd->print("<"); //Put the cursor at the end of the line and print it
     } else {
-      lcd.setCursor(displaySize[1] - 1, i);
-      lcd.print(" "); //Print a space if not, to remove a possible previous cursor
+      lcd->setCursor(displaySize[1] - 1, i);
+      lcd->print(" "); //Print a space if not, to remove a possible previous cursor
     }
   }
   (*onSelect)(elements, values, ret[selected]);
@@ -727,7 +727,7 @@ void refresh(int pos, int selected, String elements[], int elementCount, String 
 }
 
 
-int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int listPos[2]) { //Creates a list, returns the index of the item selected
+int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int listPos[2]) { //Creates a list, returns the index of the item selected
   char curKey = inputKey();
   //int pos = 0;
   int scrollPos = 1;
@@ -741,7 +741,7 @@ int list(String elements[], int elementCount, String values[], boolean paged, bo
   const int scrollDelay = 1700;
   const int scrollSpeedDelay = 300;
 
-  lcd.clear();
+  lcd->clear();
   refresh(listPos[0], listPos[1], elements, elementCount, values, paged, infinite, lcd, displaySize, (*onSelect), curScreen);
   while (curKey != keyConfirm) {
     if ((unsigned long)(millis() - lastMillis) >= scrollDelay) {
@@ -751,12 +751,12 @@ int list(String elements[], int elementCount, String values[], boolean paged, bo
         if ((unsigned long)(millis() - lastSubMillis) >= scrollSpeedDelay) {
 
           if (currentOption.substring(scrollPos, scrollPos + displaySize[1] - 3).length() >= displaySize[1] - 3 ) { //margin
-            lcd.setCursor(0, listPos[1]);
+            lcd->setCursor(0, listPos[1]);
             for (int i = 0; i < displaySize[1] - 3; i++) { //margin
-              lcd.print(" ");
+              lcd->print(" ");
             }
-            lcd.setCursor(0, listPos[1]);
-            lcd.print(currentOption.substring(scrollPos, scrollPos + displaySize[1] - 3)); //margin
+            lcd->setCursor(0, listPos[1]);
+            lcd->print(currentOption.substring(scrollPos, scrollPos + displaySize[1] - 3)); //margin
             scrollPos++;
             lastSubMillis = millis();
 
@@ -774,14 +774,14 @@ int list(String elements[], int elementCount, String values[], boolean paged, bo
       if (listPos[1] > 0) {
         if (elements[curScreen[listPos[1]]].length() > displaySize[1] - 3) {
           scrollPos = 1;
-          lcd.setCursor(0, listPos[1]);
-          lcd.print(elements[curScreen[listPos[1]]].substring(0, displaySize[1] - 3));
+          lcd->setCursor(0, listPos[1]);
+          lcd->print(elements[curScreen[listPos[1]]].substring(0, displaySize[1] - 3));
         }
         listPos[1]--;
-        lcd.setCursor(displaySize[1] - 1, listPos[1] + 1);
-        lcd.print(" ");
-        lcd.setCursor(displaySize[1] - 1, listPos[1]);
-        lcd.print("<");
+        lcd->setCursor(displaySize[1] - 1, listPos[1] + 1);
+        lcd->print(" ");
+        lcd->setCursor(displaySize[1] - 1, listPos[1]);
+        lcd->print("<");
         lastMillis = millis();
         (*onSelect)(elements, values, curScreen[listPos[1]]);
       } else {
@@ -826,14 +826,14 @@ int list(String elements[], int elementCount, String values[], boolean paged, bo
       if (listPos[1] < displaySize[0] - 1 && listPos[1] < elementCount - 1) { //remove && part to fix?
         if (elements[curScreen[listPos[1]]].length() > displaySize[1] - 3) {
           scrollPos = 1;
-          lcd.setCursor(0, listPos[1]);
-          lcd.print(elements[curScreen[listPos[1]]].substring(0, displaySize[1] - 3));
+          lcd->setCursor(0, listPos[1]);
+          lcd->print(elements[curScreen[listPos[1]]].substring(0, displaySize[1] - 3));
         }
         listPos[1]++;
-        lcd.setCursor(displaySize[1] - 1, listPos[1] - 1);
-        lcd.print(" ");
-        lcd.setCursor(displaySize[1] - 1, listPos[1]);
-        lcd.print("<");
+        lcd->setCursor(displaySize[1] - 1, listPos[1] - 1);
+        lcd->print(" ");
+        lcd->setCursor(displaySize[1] - 1, listPos[1]);
+        lcd->print("<");
         lastMillis = millis();
         (*onSelect)(elements, values, curScreen[listPos[1]]);
       } else {
@@ -901,38 +901,39 @@ bail:
 
 void listDoNothing(String elements[], String values[], int i) {}
 
-int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index)) {
+int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index)) {
   int listPos[2] = {0, 0};
   return list(elements, elementCount, values, paged, infinite, lcd, displaySize, (*onSelect), listPos);
 }
-int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], int listPos[2]) {
+int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], int listPos[2]) {
   return list(elements, elementCount, values, paged, infinite, lcd, displaySize, listDoNothing, listPos);
 }
-int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[]) {
+int list(String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[]) {
   return list(elements, elementCount, values, paged, infinite, lcd, displaySize, listDoNothing);
 }
 int list(String elements[], int elementCount, String values[]) {
-  return list(elements, elementCount, values, false, true, lcd, displayPrimarySize, listDoNothing);
+  return list(elements, elementCount, values, false, true, Displays::getPrimaryDisplay(), displayPrimarySize, listDoNothing);
 }
 //--------- /\ With values /\ -------
 
 //------- \/ Without values \/ ------
-int list(String elements[], int elementCount, boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int listPos[2]) {
+int list(String elements[], int elementCount, boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int listPos[2]) {
   String values[] = {""};
+  
   return list(elements, elementCount, values, paged, infinite, lcd, displaySize, (*onSelect), listPos);
 }
-int list(String elements[], int elementCount, boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index)) {
+int list(String elements[], int elementCount, boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index)) {
   int listPos[2] = {0, 0};
   return list(elements, elementCount, paged, infinite, lcd, displaySize, (*onSelect), listPos);
 }
-int list(String elements[], int elementCount, boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[], int listPos[2]) {
+int list(String elements[], int elementCount, boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], int listPos[2]) {
   return list(elements, elementCount, paged, infinite, lcd, displaySize, listDoNothing, listPos);
 }
-int list(String elements[], int elementCount, boolean paged, boolean infinite, LiquidCrystal lcd, const int displaySize[]) {
+int list(String elements[], int elementCount, boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[]) {
   return list(elements, elementCount, paged, infinite, lcd, displaySize, listDoNothing);
 }
 int list(String elements[], int elementCount) {
-  return list(elements, elementCount, false, true, lcd, displayPrimarySize, listDoNothing);
+  return list(elements, elementCount, false, true, Displays::getPrimaryDisplay(), displayPrimarySize, listDoNothing);
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -969,7 +970,7 @@ void bombMode() { //EEPROM group 2, Byte Usage: Timer - 3, Pincode - 4, Mistakes
     lcd2.print(F("                "));
     lcd2.setCursor(0, 1);
     lcd2.print(F("-Config"));
-    int option = list(optionList, optionCount, false, false, lcd, displayPrimarySize, bombModeOnSelect, listPos);
+    int option = list(optionList, optionCount, false, false, &lcd, displayPrimarySize, bombModeOnSelect, listPos);
     if (option == -1) {
       exitProgram = true;
     } else if (option == 0) {
@@ -1062,7 +1063,7 @@ void rgbLedConfigurator() {
     lcd2.print(F("                "));
     lcd2.setCursor(0, 1);
     lcd2.print(F("-Menu"));
-    int option = list(optionList, optionCount, true, true, lcd, displayPrimarySize, listPos);
+    int option = list(optionList, optionCount, true, true, &lcd, displayPrimarySize, listPos);
     if (option == -1) {
       exitProgram = true;
     } else if (option == 0) {
@@ -1200,7 +1201,7 @@ void rgbLedConfigurator() {
       String colors[] = {F("Yellow"), F("Pink"), F("Cyan"), F("White"), F("Off")};
       String values[] = {"130,105,0", "160,0,180", "0,100,120", "120,105,255", "0,0,0"};
       int colorsSz = 5;
-      int pick = list(colors, colorsSz, values, false, true, lcd, displayPrimarySize, rgbLedConfiguratorColorsOnSelect);
+      int pick = list(colors, colorsSz, values, false, true, &lcd, displayPrimarySize, rgbLedConfiguratorColorsOnSelect);
       if (pick != -1) {
         rgbIndicator(values[pick].substring(0, values[pick].indexOf(",")).toInt(), values[pick].substring(values[pick].indexOf(",") + 1, values[pick].lastIndexOf(",")).toInt(), values[pick].substring(values[pick].lastIndexOf(",") + 1, values[pick].length()).toInt());
         rgbLedConfiguratorSaveToEeprom();
@@ -1236,11 +1237,11 @@ void rgbLedConfigurator() {
 
 //------------------------------------------------------------------------------------- \DRAW/ -------------------------------------------------------------------------------------
 void refreshCursor(int cursorPos[], boolean curBlink, LiquidCrystal *lcd) {
-  lcd.setCursor(cursorPos[0], cursorPos[1] / 2);
+  lcd->setCursor(cursorPos[0], cursorPos[1] / 2);
   if (curBlink) { //shouldn't just overwrite anything
-    lcd.write(byte(1));
+    lcd->write(byte(1));
   } else {
-    lcd.write(byte(0));
+    lcd->write(byte(0));
   }
 }
 
@@ -1317,26 +1318,10 @@ void draw(LiquidCrystal *lcd, const int displaySize[]) { //A quick and simple dr
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-void owo() {
-  while (false) {
-    char key = inputKey();
-    lcd2.print("OwO");
-    lcd.print("OwO");
-    delay(1);
-    lcd2.print("UwU");
-    lcd.print("UwU");
-    delay(1);
-    if (key == keyESC or key == keyShutdown) {
-      lcd.clear();
-      lcd2.clear();
-      return;
-    }
-  }
-  //OwOProgram(&lcd, &lcd2).start();
-}
+
 
 void setupInput() {
-
+  
   long unsigned int codes[] = {
       16738455, 16724175, 16718055, 16743045,
       16716015, 16726215, 16734885, 16728765,
@@ -1669,7 +1654,7 @@ void loop() {
           strcpy_P(buffer, (PGM_P)pgm_read_word(&(programs[i])));
           programNames[i] = buffer;
         }
-        int launch = list(programNames, programCount, false, true, lcd, displayPrimarySize, programMenuDisplayDesc, programMenuListPos);
+        int launch = list(programNames, programCount, false, true, &lcd, displayPrimarySize, programMenuDisplayDesc, programMenuListPos);
 
         switch (launch) {
           case -1:  //Return to menu
@@ -1683,7 +1668,8 @@ void loop() {
             //function program 0
             break;
           case 1://Launch program 1
-            owo();
+            OwOProgram().start();
+            
             break;
           case 7:
             lcd2.clear();

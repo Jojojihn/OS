@@ -6,11 +6,12 @@ Program::Program(String name, String description) : name(name), description(desc
 }
 
 void Program::start() {
+    Displays::clearAllDisplays();
     running = true;
     while(running) {
         loop();
     }
-    
+    Displays::clearAllDisplays();
 }
 
 

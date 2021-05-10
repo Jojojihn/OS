@@ -3,6 +3,18 @@
 
 
 
+
+Vector2 LcdDisplay::getSize() {
+    return size;
+}
+
+LcdDisplay::LcdDisplay(int sizeX, int sizeY) : size(Vector2(sizeX, sizeY)) {}
+
+LcdDisplay::~LcdDisplay() {}
+
+
+
+
 LiquidCrystalDisplay::LiquidCrystalDisplay(uint8_t rs, uint8_t rw, uint8_t enable,
 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 			     uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7) : 
@@ -29,6 +41,10 @@ LiquidCrystalDisplay::LiquidCrystalDisplay(uint8_t rs,  uint8_t enable,
                  LcdDisplay(1,16),
                  lcd(LiquidCrystal(rs, enable, d0, d1, d2, d3)) {}
 
+
+LiquidCrystal *LiquidCrystalDisplay::getLcd() {
+    return &lcd;
+}
 
 void LiquidCrystalDisplay::begin(uint8_t cols, uint8_t rows, uint8_t charsize) {
     size = Vector2(cols, rows);
@@ -58,17 +74,6 @@ void LiquidCrystalDisplay::clear() {
 
 
 
-Vector2 LcdDisplay::getSize() {
-    return size;
-}
-
-LcdDisplay::LcdDisplay(int sizeX, int sizeY) : size(Vector2(sizeX, sizeY)) {}
-
-
-
-
-
-
 
 
 LcdDisplay *Displays::getPrimaryDisplay() {
@@ -87,6 +92,12 @@ LcdDisplay *Displays::getSecondaryDisplay() {
 void Displays::setSecondaryDisplay(LcdDisplay *display) {
     addDisplay(display);
     primaryDisplay = display;
+}
+
+void Displays::clearAllDisplays() {
+    for(unsigned int i = 0; i < displays.size(); i++) {
+        displays.get(i)->clear();
+    }
 }
 
 void Displays::addDisplay(LcdDisplay *display) {

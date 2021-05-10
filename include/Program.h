@@ -18,7 +18,9 @@ class Program : public UIListItem {
         bool running;
 
 
-        //Start this program
+        /**
+         * Start this program. All screens will be cleared before starting and after exiting
+         */
         void start();
 
         virtual void listOnSelect() override;

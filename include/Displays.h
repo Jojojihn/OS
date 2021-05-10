@@ -1,5 +1,5 @@
 #ifndef Displays_h
-#define Display_h
+#define Displays_h
 
 #include <Arduino.h>
 
@@ -7,7 +7,9 @@
 #include "Utils.h"
 #include "LiquidCrystal.h"
 
-
+/**
+ * A generic LcdDisplay.
+ */
 class LcdDisplay : public Print {
     public:
         virtual ~LcdDisplay();
@@ -32,7 +34,7 @@ class LcdDisplay : public Print {
         using Print::write;
 
         /**
-         * Sets the cursor the the specified position
+         * Sets the cursor to the specified position
          * 
          * @param x The column to set the cursor to, starting at 0
          * 
@@ -54,7 +56,9 @@ class LcdDisplay : public Print {
         LcdDisplay();
 };
 
-
+/**
+ * An LcdDisplay using LiquidCrystal
+ */
 class LiquidCrystalDisplay : public LcdDisplay {
     public:
         LiquidCrystalDisplay(uint8_t rs, uint8_t enable,
@@ -135,6 +139,11 @@ class Displays {
 
 
         //Todo: A way to get displays
+
+        /**
+         * Clears all displays.
+         */
+        static void clearAllDisplays();
         
         /**
          * Adds a display, if it isn't already added.
