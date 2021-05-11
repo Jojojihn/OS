@@ -129,13 +129,16 @@ int settingPage = 0;
 int programMenuListPos[] = {0, 0};
 //-------------------------------------------
 
+
+//These are still here for now for compatibility
+IRrecv irrecv(IRPin);
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+
 LiquidCrystalDisplay lcd(22, 23, 24, 25, 26, 27);
 LiquidCrystalDisplay_I2C lcd2(0x27, 16, 2);
-IRrecv irrecv(IRPin);
-BigNumbers bigNum(lcd.getLcd());
-RGBLed rgbLed = RGBLed(RGBleds[0], RGBleds[1], RGBleds[2]);
 
+RGBLed rgbLed = RGBLed(RGBleds[0], RGBleds[1], RGBleds[2]);
+BigNumbers bigNum(lcd.getLcd());
 
 
 //--------------- *New* Input ---------------
@@ -682,24 +685,25 @@ void shutDown() {
 
 //------------------------------------------------------------------------------------ \LISTS/ -------------------------------------------------------------------------------------
 void refresh(int pos, int selected, String elements[], int elementCount, String values[], boolean paged, boolean infinite, LcdDisplay *lcd, const int displaySize[], void (*onSelect)(String elements[], String values[], int index), int ret[]) { //pos is a value between 0 and elementCount-1;
+  //The array of displayed strings, one for every row
   String displayed[displaySize[0]];
   //int ret[];
 
-  for (int i = 0; i < displaySize[0]; i++) {
-    int ii = pos + i;
+  for (int i = 0; i < displaySize[0]; i++) { //For every row on the display
+    int ii = pos + i; //The current position in the element array for the current row
 
-    if (pos + i > elementCount - 1) {
+    if (ii > elementCount - 1) { //If the current position would be out of bounds of the elements
       if (infinite == true) {
-        ii = pos + i - elementCount;
+        ii = pos + i - elementCount; //Just wrap around, if the list is infinite scrolling
       } else {
-        ii = -1; //? //I don't even know why I put a question mark here anymore
+        ii = -1; //Otherwise indicate this element is out of bounds
       }
     }
-    if (ii != -1) {
-      displayed[i] = elements[ii];
+    if (ii != -1) { //If this element wasn't deemed out of bounds
+      displayed[i] = elements[ii]; //Set the string in the displayed array at the correct index corresponding to the row
       //ret[i] = ii;
     } else {
-      displayed[i] = "";
+      displayed[i] = ""; //If element was deemed out of bounds, the string at that row should just be empty
       //ret[i] = ii;
     }
     ret[i] = ii;
@@ -897,6 +901,7 @@ bail:
     Serial.print(String(curScreen[listPos[1]]));
     return curScreen[listPos[1]];
   }
+ 
 }
 
 

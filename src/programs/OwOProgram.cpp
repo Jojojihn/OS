@@ -4,7 +4,7 @@
 
 
 OwOProgram::OwOProgram() :
-    Program(F("OwO The Game"), F("UwU")) {}
+    Program("OwO The Game", "UwU") {}
 
 
 
