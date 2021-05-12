@@ -7,6 +7,7 @@
 #include "List.h"
 #include "UILists.h"
 #include "programs/OwOProgram.h"
+#include "programs/InputTester.h"
 #include "system/Displays.h"
 
 

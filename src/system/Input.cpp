@@ -150,6 +150,7 @@ bool Input::isActionJustPressed(const char* tag) {
 
             if(key == curMap->key) {
                 //Serial.print(F("Device and Key match! Return true."));
+                Serial.println(key);
                
                 return true;
             } else {

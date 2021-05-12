@@ -113,6 +113,7 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
             }
 
             //If it existed, add the index in created chars to the row map
+            display->setCursor(0, barChar);
             if(exists != -1) {
                 display->write(byte(exists));
 
@@ -234,7 +235,7 @@ void UIList::select(LcdDisplay *display, unsigned int selIndex, bool force) {
         }
             
         
-
+        items->get(selIndex)->listOnSelect();
     }
 }
 
