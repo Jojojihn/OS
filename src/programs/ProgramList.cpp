@@ -26,6 +26,7 @@ ProgramList::~ProgramList() {
 
 
 void ProgramList::loop() {
+    Serial.println(F("Starting program list..."));
     int launch = programlist->show(Displays::getPrimaryDisplay());
 
 

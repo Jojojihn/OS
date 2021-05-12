@@ -175,6 +175,8 @@ void UIList::drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, u
 
 //Draws all the lines again according to the display state and renders the scrollbar
 void UIList::redraw(LcdDisplay *display) {
+    Serial.println(F("Redraw"));
+
     items->startIteration(state.index);
     for(unsigned int row = 0; row < display->getSize().y; row++) {
 
@@ -188,6 +190,8 @@ void UIList::redraw(LcdDisplay *display) {
 
 //Move the selector and redraw the entries if required
 void UIList::select(LcdDisplay *display, unsigned int selIndex, bool force) {
+    Serial.println(F("Select called"));
+
     selIndex = min(items->size() - 1, selIndex);
 
     //If the new index isn't the same as before, we need to update something
@@ -236,11 +240,11 @@ int UIList::show(LcdDisplay *display) {
     display->clear();
 
 
-
+    Serial.println(F("Showing list"));
     redraw(display);
     select(display, state.selection, true);
 
-
+    Serial.println("List drawn");
     while(!Input::isActionJustPressed("back")) {
         
         if(Input::isActionJustPressed("down")) {
