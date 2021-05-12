@@ -119,7 +119,7 @@ void Action::removeMappingsForDevice(InputDevice *device) {
 
 
 bool Input::isActionJustPressed(const char* tag) {
-    Serial.println(F("Check if action is pressed. Getting action..."));
+    Serial.println(F("isActionPr"));
     Action *act = getAction(tag);
     
     if(act != nullptr) {
@@ -134,7 +134,7 @@ bool Input::isActionJustPressed(const char* tag) {
 
             device->getKey();
         }   
-        Serial.println(F("Polled all devices, iterating through mappings..."));
+        Serial.println(F("Polled, iterating mappings"));
 
         act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
@@ -145,7 +145,7 @@ bool Input::isActionJustPressed(const char* tag) {
             Serial.println(curMap->key);
             
             char key = curMap->device->getLastKey();
-            Serial.print(F("Polled key from the device in mapping: "));
+            Serial.print(F("device key in mapping: "));
             Serial.println(key);
 
             if(key == curMap->key) {
@@ -153,12 +153,12 @@ bool Input::isActionJustPressed(const char* tag) {
                
                 return true;
             } else {
-                 Serial.println(F("Device and key don't match, continue (or return)"));
+                 Serial.println(F("Device or key don't match"));
             }
         }
     } 
 
-    Serial.println(F("Action wasn't found or Mappings didn't match"));
+    Serial.println(F("Action not found or no mapping match"));
     return false;
 }
 
