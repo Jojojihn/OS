@@ -132,7 +132,10 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
 //Draws a single line respecting it's scroll position and margins
 //Both start and endIndex are inclusive
 void UIList::drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, unsigned int startIndex, unsigned int endIndex) {
-    
+    Serial.print(F("draw Line at row "));
+    Serial.println(row);
+
+
     startIndex = min(startIndex, endIndex);
 
     //If there are at least two spaces for text available...
@@ -181,7 +184,7 @@ void UIList::redraw(LcdDisplay *display) {
     for(unsigned int row = 0; row < display->getSize().y; row++) {
 
         UIListItem *item = items->iterate();      
-        drawLine(display, item, 1, row, display->getSize().x -1 - 3);
+        drawLine(display, item, row, 1, display->getSize().x -1 - 3);
 
     }
     scrollbar(display, items->size(), display->getSize().y, state.index);

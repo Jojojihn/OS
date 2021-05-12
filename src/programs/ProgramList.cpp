@@ -13,8 +13,7 @@ ProgramList::ProgramList() :
         programs.add(new OwOProgram());
         programs.add(new OwOProgram());
         programs.add(new OwOProgram());
-        programs.add(new ProgramList());
-
+        
         programlist = new UIList(&programs, false);
     }
 
