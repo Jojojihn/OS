@@ -125,7 +125,7 @@ LcdDisplay *Displays::getSecondaryDisplay() {
 
 void Displays::setSecondaryDisplay(LcdDisplay *display) {
     addDisplay(display);
-    primaryDisplay = display;
+    secondaryDisplay = display;
 }
 
 void Displays::clearAllDisplays() {

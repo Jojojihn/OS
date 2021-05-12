@@ -13,11 +13,11 @@ void OwOProgram::loop() {
     LcdDisplay *lcd2 = Displays::getSecondaryDisplay();
 
     while(!Input::isActionJustPressed("back")) {
-        lcd2->print(F("OwO"));
-        lcd->print(F("OwO"));
+        lcd2->print("OwO");
+        lcd->print("OwO");
         delay(1);
-        lcd2->print(F("UwU"));
-        lcd->print(F("UwU"));
+        lcd2->print("UwU");
+        lcd->print("UwU");
         delay(50);
     }  
     running = false;
