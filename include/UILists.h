@@ -81,8 +81,8 @@ class UIList {
 
 
     private:
-        UIList(const UIList &from); // copy constructor
-	    UIList& operator=(const UIList &from); // assignment operator
+        //UIList(const UIList &from); // copy constructor
+	    //UIList& operator=(const UIList &from); // assignment operator
 
         /**
          * Draws a scrollbar in the leftmost column of the specified LcdDisplay. The scroll handle will 

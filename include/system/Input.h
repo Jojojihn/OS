@@ -10,7 +10,6 @@
 
 class InputDevice {
     public:
-        String hi;
         /**
          * The key that was last pressed (since calling this function), if it is still pressed
          * 

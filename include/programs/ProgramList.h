@@ -17,6 +17,8 @@ class ProgramList : public Program {
 
     protected:
         List<UIListItem> programs;
+        UIList *programlist;
+        
 
         void loop() override;
 };

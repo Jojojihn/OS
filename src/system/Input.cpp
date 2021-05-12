@@ -1,7 +1,7 @@
 #include "system/Input.h"
 #define logD(a) (Serial.println(a))
 
-InputDevice::InputDevice() : hi("Device: Yap I exist"), lastPolled('\0') {}
+InputDevice::InputDevice() : lastPolled('\0') {}
 InputDevice::~InputDevice() {}
 
 char InputDevice::getKey() {
@@ -178,22 +178,22 @@ void Input::removeInputDevice(InputDevice* device, bool deleteObject) {
 }
 
 Action *Input::getAction(const char* tag) {
-    Serial.print(F("Attempting to find action with tag: "));
-    Serial.println(tag);
+    //Serial.print(F("Attempting to find action with tag: "));
+    //Serial.println(tag);
 
     actions.startIteration();
     for(unsigned int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
-        Serial.print(F("Comparing with: "));
-        Serial.println(curAct->tag);
+        //Serial.print(F("Comparing with: "));
+        //Serial.println(curAct->tag);
         if(strcmp(curAct->tag, tag) == 0) {
-            Serial.println(F("Match. Returning the action..."));
+            //Serial.println(F("Match. Returning the action..."));
             return curAct;
         }
-        Serial.println(F("No match. Continue..."));
+        //Serial.println(F("No match. Continue..."));
     }
     
-    Serial.println(F("No action with the specified tag found. Returning null..."));
+    //Serial.println(F("No action with the specified tag found. Returning null..."));
     return nullptr;
 }
 
