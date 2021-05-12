@@ -5,7 +5,7 @@
 ProgramList::ProgramList() :
     Program("Program List", "Displays a list of programs"),
     programs(List<UIListItem>()) {
-        Serial.println("ProgramList instantiated");
+        //
     
         programs.add(new OwOProgram());
         programs.add(new OwOProgram());
@@ -26,7 +26,7 @@ ProgramList::~ProgramList() {
 
 
 void ProgramList::loop() {
-    Serial.println(F("Starting program list..."));
+    //
     int launch = programlist->show(Displays::getPrimaryDisplay());
 
 

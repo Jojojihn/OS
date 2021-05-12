@@ -6,7 +6,7 @@ Program::Program(String name, String description) : name(name), description(desc
 }
 
 void Program::start() {
-    Serial.println(F("A program has started"));
+    //
     
     Displays::clearAllDisplays();
     running = true;

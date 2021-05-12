@@ -1,5 +1,5 @@
 #include "system/Input.h"
-#define logD(a) (Serial.println(a))
+#define logD(a) (//
 
 InputDevice::InputDevice() : lastPolled('\0') {}
 InputDevice::~InputDevice() {}
@@ -122,47 +122,47 @@ void Input::poll() {
     for(unsigned int i = 0; i < inputDevices.size(); i++) {
         InputDevice *device = inputDevices.iterate();
 
-        //Serial.println(device->hi);
+        ////
 
         device->getKey();
     }   
 }
 
 bool Input::isActionJustPressed(const char* tag) {
-    //Serial.println(F("isActionPr"));
+    ////
     Action *act = getAction(tag);
     
     if(act != nullptr) {
-        //Serial.print(F("Got action. Tag: "));
-        //Serial.println(act->tag);
+        ////
+        ////
 
         
-        //Serial.println(F("Polled, iterating mappings"));
+        ////
 
         act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
             Action::DeviceKeyMap *curMap = act->mappings.iterate();
-            //Serial.print(F("Mapping "));
-            //Serial.print(i);
-            //Serial.print(F("- Key: "));
-            //Serial.println(curMap->key);
+            ////
+            ////
+            ////
+            ////
             
             char key = curMap->device->getLastKey();
-            //Serial.print(F("device key in mapping: "));
-            //Serial.println(key);
+            ////
+            ////
 
             if(key == curMap->key) {
-                //Serial.print(F("Device and Key match! Return true."));
-                Serial.println(key);
+                ////
+                //
                
                 return true;
             } else {
-                 //Serial.println(F("Device or key don't match"));
+                 ////
             }
         }
     } 
 
-    //Serial.println(F("Action not found or no mapping match"));
+    ////
     return false;
 }
 
@@ -182,34 +182,34 @@ void Input::removeInputDevice(InputDevice* device, bool deleteObject) {
 }
 
 Action *Input::getAction(const char* tag) {
-    //Serial.print(F("Attempting to find action with tag: "));
-    //Serial.println(tag);
+    ////
+    ////
 
     actions.startIteration();
     for(unsigned int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
-        //Serial.print(F("Comparing with: "));
-        //Serial.println(curAct->tag);
+        ////
+        ////
         if(strcmp(curAct->tag, tag) == 0) {
-            //Serial.println(F("Match. Returning the action..."));
+            ////
             return curAct;
         }
-        //Serial.println(F("No match. Continue..."));
+        ////
     }
     
-    //Serial.println(F("No action with the specified tag found. Returning null..."));
+    ////
     return nullptr;
 }
 
 Action *Input::addAction(const char* tag) {
-    Serial.print(F("Adding action with tag: "));
-    Serial.println(tag);
+    //
+    //
 
     actions.startIteration();
     for(unsigned int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
         if(strcmp(curAct->tag, tag) == 0) {
-            Serial.println(F("Found existing action by the same tag, returning..."));
+            //
             return curAct;
         }
     }
@@ -222,7 +222,7 @@ Action *Input::addAction(const char* tag) {
     Action *newAct = new Action(actTag);
     actions.add(newAct);
 
-    Serial.println(F("Action successfully created and added to action list."));
+    //
     return newAct;
 }
 

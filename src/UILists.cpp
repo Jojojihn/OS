@@ -133,8 +133,8 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
 //Draws a single line respecting it's scroll position and margins
 //Both start and endIndex are inclusive
 void UIList::drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, unsigned int startIndex, unsigned int endIndex) {
-    Serial.print(F("draw Line at row "));
-    Serial.println(row);
+    //
+    //
 
 
     startIndex = min(startIndex, endIndex);
@@ -179,7 +179,7 @@ void UIList::drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, u
 
 //Draws all the lines again according to the display state and renders the scrollbar
 void UIList::redraw(LcdDisplay *display) {
-    Serial.println(F("Redraw"));
+    //
 
     items->startIteration(state.index);
     for(unsigned int row = 0; row < display->getSize().y; row++) {
@@ -194,7 +194,7 @@ void UIList::redraw(LcdDisplay *display) {
 
 //Move the selector and redraw the entries if required
 void UIList::select(LcdDisplay *display, unsigned int selIndex, bool force) {
-    Serial.println(F("Select called"));
+    //
 
     selIndex = min(items->size() - 1, selIndex);
     selIndex = max(0, selIndex);
@@ -245,11 +245,11 @@ int UIList::show(LcdDisplay *display) {
     display->clear();
 
 
-    Serial.println(F("Showing list"));
+    //
     redraw(display);
     select(display, state.selection, true);
 
-    Serial.println("List drawn");
+    //
     do { 
         Input::poll();
 

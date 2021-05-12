@@ -18,8 +18,7 @@
 
 //#include "programs/OwOProgram.h"
 #include "programs/ProgramList.h"
-
-
+#include "avr8-stub.h"
 
 
 
@@ -176,7 +175,7 @@ char inputKey() {
       'e', 'f', 'g', 'h', //NEXT, PL/PAU, EQ, 100+
       'i'                 //200+
     };
-    //Serial.println(results.value);
+    ////
     for (int i = 0; i < sz; i++) {
       if (codes[i] == results.value) {
         returnChar = keyValues[i];
@@ -186,8 +185,8 @@ char inputKey() {
     irrecv.resume();
   }
   if (returnChar) {
-    Serial.print(F("Pressed "));
-    Serial.println(String(returnChar));
+    //
+    //
   }
   return returnChar;
 }
@@ -344,12 +343,12 @@ void rgbIndicator(byte red, byte green, byte blue, boolean skipVars) {
     rgbValues[1] = green;
     rgbValues[2] = blue;
   }
-  Serial.print(F("Set RGB LED to R:"));
-  Serial.print(red);
-  Serial.print(F(", G:"));
-  Serial.print(green);
-  Serial.print(F(", B:"));
-  Serial.println(blue);
+  //
+  //
+  //
+  //
+  //
+  //
 }
 
 void rgbIndicator(byte red, byte green, byte blue) {
@@ -363,15 +362,15 @@ void setupEepromConfig(boolean print) {
     eepromConfig[i][1] = previous + 2;
     eepromConfig[i][2] = previous + 1 + eepromGroups[i];
     if (print) {
-      Serial.print(F("EEPROM Group "));
-      Serial.print(String(i));
-      Serial.print(F(":\n Check Byte: "));
-      Serial.print(previous + 1);
-      Serial.print(F(", Byte Range from "));
-      Serial.print(previous + 2);
-      Serial.print(F(" to "));
-      Serial.print(previous + 1 + eepromGroups[i]);
-      Serial.println(F("."));
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
     }
     previous += 1 + eepromGroups[i];
   }
@@ -381,8 +380,8 @@ void setupEepromConfig(boolean print) {
 void restoreEepromData() {
   for (int i = 0; i < eepromGroupsSz; i++) {
     boolean checkByte = (boolean) EEPROM.read(eepromConfig[i][0]);
-    //Serial.print("CheckByte on Group " + String(i) + " is ");
-    //Serial.println(EEPROM.read(eepromConfig[i][0]));
+    ////
+    ////
     if (checkByte) {
       if (i == 0) {
         muted = (boolean) EEPROM.read(eepromConfig[0][1]);
@@ -390,13 +389,13 @@ void restoreEepromData() {
         for (int ii = 0; ii <= 6; ii++) { //This used to say <= 7, which should be wrong, so I fixed it but it is not tested
           *keyRefs[ii] = (char) EEPROM.read(eepromConfig[0][1] + 1 + ii);
         }
-        Serial.println(F("Settings restored."));
+        //
       } else if (i == 1) {
         for (int ii = 0; ii < 3; ii++) {
           rgbValues[ii] = EEPROM.read(eepromConfig[1][1] + ii);
         }
         rgbIndicator(rgbValues[0], rgbValues[1], rgbValues[2]);
-        Serial.println(F("RGB values restored."));
+        //
       }
     }
   }
@@ -428,13 +427,13 @@ void drawFrame(int subFrameDelay, const int dimensions[], const int spacesCount,
       uniqueCount++;
     }
   }
-  //Serial.println("Unique character list: " + uniqueCharacters + "    " + uniqueCount);
+  ////
 
   for (int pos = 0; float(pos) < (float(uniqueCount) / 8); pos++) { //run as many times as needed to render the entire frame with 8 unique characters per step
     lcd.clear();
     //lcd.setCursor(0,0);
     //lcd.print("                                                                                          ");
-    //Serial.println("Start of subframe");
+    ////
     String lcdChars = ""; //Keeps track of the location each specific character has been saved at //format: "0,0b0 0,1b1"
     int lcdCharsPos = 0;  //Keeps track which location was last saved to on the lcd
     String allowedCharacters;  //A maximum of 8 characters that are allowed in the current subframe
@@ -447,7 +446,7 @@ void drawFrame(int subFrameDelay, const int dimensions[], const int spacesCount,
       lastIndex[1] = uniqueCharacters.indexOf(" ", lastIndex[1] + 1);
     }
     allowedCharacters = uniqueCharacters.substring(lastIndex[0], lastIndex[1]);
-    //Serial.println(" Allowed characters are '" + allowedCharacters + "'");
+    ////
     //lcd.setCursor((displayPrimarySize[1]/2)-dimensions[1]/2, (displayPrimarySize[0]/2)-dimensions[0]/2); //Set the cursor to the upper left of the frame
 
     for (int i = 0; i < dimensions[0]; i++) { //for every row in frame
@@ -455,12 +454,12 @@ void drawFrame(int subFrameDelay, const int dimensions[], const int spacesCount,
 
         //arrangement[i*dimensions[1]+ii] //current position in arrangement
         String curChar = String(arrangement[i * dimensions[1] + ii][0]) + "," + String(arrangement[i * dimensions[1] + ii][1]); //Format: "0,1"
-        //Serial.println(" Current Character: " + curChar);
+        ////
         if (allowedCharacters.indexOf(curChar) != -1) { //If the character at this position is part of the currently allowed characters
-          //Serial.println("  -Allowed");
+          ////
           //delay(300);
           if (lcdChars.indexOf(curChar) != -1) { //If it is part of the created chars //.indexOf(curChar, pos * 8)
-            //Serial.println("   -Character already created, loading from " + lcdChars.substring(lcdChars.indexOf("b", lcdChars.indexOf(curChar)) + 1, lcdChars.indexOf("b", lcdChars.indexOf(curChar)) + 2));
+            ////
             lcd.setCursor((displayPrimarySize[1] / 2) - dimensions[1] / 2 + ii, (displayPrimarySize[0] / 2) - dimensions[0] / 2 + i);
             lcd.write(byte(lcdChars.substring(lcdChars.indexOf("b", lcdChars.indexOf(curChar)) + 1, lcdChars.indexOf("b", lcdChars.indexOf(curChar)) + 2).toInt())); //!!: cursed
           } else {
@@ -890,7 +889,7 @@ int list(String elements[], int elementCount, String values[], boolean paged, bo
       goto bail;
     } else if (curKey == keyShutdown) {
       bailed = true;
-      Serial.println(F("Shutdown via bail"));
+      //
       shutDown();
       goto bail;
     }
@@ -900,8 +899,8 @@ bail:
   if (bailed) {
     return -1;
   } else {
-    Serial.println(F("List returned "));
-    Serial.print(String(curScreen[listPos[1]]));
+    //
+    //
     return curScreen[listPos[1]];
   }
  
@@ -1021,13 +1020,13 @@ void bombMode() { //EEPROM group 2, Byte Usage: Timer - 3, Pincode - 4, Mistakes
 //----------------------------------------------------------------------------- \RGB LED CONFIGURATOR/ ------------------------------------------------------------------------------
 void rgbLedConfiguratorUpdateCursor(int selection) {
   for (int i = 0; i < 4; i++) {
-    //Serial.println("For loop run: " + String(i) ", selection is" + String(selection));
+    ////
     if (i != selection) {
-      //Serial.println("Wasn't equal to selection, set the cursor at " + String(displayPrimarySize[1] - 1) + ", " + String(i));
+      ////
       lcd.setCursor(displayPrimarySize[1] - 1, i);
       lcd.print(" ");
     } else {
-      //Serial.println("Was equal to the selection");
+      ////
       if (i == 3) {
         i = displayPrimarySize[0] - 1;
       }
@@ -1053,9 +1052,9 @@ void rgbLedConfiguratorColorsOnSelect(String elements[], String values[], int in
 void rgbLedConfiguratorSaveToEeprom() {
   for (int i = 0; i < 3; i++) {
     EEPROM.update(eepromConfig[1][1] + i, rgbValues[i]);
-    //Serial.println("RGB Values Saved at address " + String(eepromConfig[1][1] + i) + ", R: " + String(rgbValues[0]) + ", G: " + String(rgbValues[1]) + ", B: " + String(rgbValues[2]));
+    ////
   }
-  Serial.println(F("RGB Values Saved."));
+  //
 }
 
 void rgbLedConfigurator() {
@@ -1235,7 +1234,7 @@ void rgbLedConfigurator() {
     }
   }
   lcd2.clear();
-  Serial.println(F("Quitting Program"));
+  //
 }
 
 
@@ -1388,7 +1387,7 @@ void setupInput() {
     ->addMapping(keypadInputDevice, '#');
 
   
-  Serial.println("Input setup complete.");
+  //
 }
 
 void setupDisplays() {
@@ -1404,22 +1403,22 @@ void setupDisplays() {
 }
 
 void setup() {
-  
+  debug_init();
   //What is this for??? // Now it's for the shutdown key.
+  breakpoint();
   pinMode(SHUTDOWN_BUTTON, INPUT_PULLUP);
 
   setupDisplays();
   
   delay(40);
-  Serial.begin(9600);
-  //Serial.print("EEPROM address 0 holds: ");
-  //Serial.println(EEPROM.read(0));
+  ////
+  ////
 
   //const int eepromGroupsSz = 2;
   //const int eepromGroups[eepromGroupsSz] {8, 3};
   //const int eepromConfig[][3];// = {{0,1,8}, {9,10,12}}; {CheckByte, DataStartByte, DataEndByte}
 
-  setupInput();
+  setupInput(); 
 
   setupEepromConfig(true); //Formats the address assignments into eepromConfig  //true for debug printing
   if (restoreData) {
@@ -1467,11 +1466,11 @@ void loop() {
           char saveVars[] = {(char) true, (char) muted , keyLeft, keyRight, keyUp, keyDown, keyConfirm, keyESC, keyShutdown};
           for (int i = 0; i < 9; i++) {
             EEPROM.update(eepromConfig[0][0] + i, saveVars[i]);
-            //Serial.print("Saved '");
-            //Serial.print(saveVars[i]);
-            //Serial.println("' at address " + String(eepromConfig[0][0]+i));
+            ////
+            ////
+            ////
           }
-          Serial.println(F("Settings saved."));
+          //
         }
         opened = "Main_Menu";
         lcd.clear();
@@ -1483,7 +1482,7 @@ void loop() {
       }
     }
     if (key == keyShutdown) {
-      Serial.println(F("Shutdown via keypress"));
+      //
       opened = "Main_Menu";
       shutDown();
     }
@@ -1503,19 +1502,19 @@ void loop() {
           if (mainMenuSelected == 1) {
             char keyRefs[] = {keyLeft, keyRight, keyUp, keyDown, keyConfirm, keyESC, keyShutdown};
             for (int i = 0; i < 7; i++) {
-              //            Serial.print(F("temp before: "));
-              //            Serial.println(tempKeyAssign[i]);
+              //            //
+              //            //
               tempKeyAssign[i] = keyRefs[i];
-              //            Serial.print(F("temp: "));
-              //            Serial.println(tempKeyAssign[i]);
-              //            Serial.print(F("ref: "));
-              //            Serial.println(keyRefs[i]);
+              //            //
+              //            //
+              //            //
+              //            //
             }
             opened = "Settings";
             lcd.clear();
           }
           if (mainMenuSelected == 2) {
-            Serial.println(F("Shutdown via menu option"));
+            //
             shutDown();
           }
         }
