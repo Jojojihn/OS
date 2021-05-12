@@ -1,7 +1,7 @@
 #include "system/Input.h"
 #define logD(a) (Serial.println(a))
 
-InputDevice::InputDevice() : lastPolled('\0') {}
+InputDevice::InputDevice() : hi("Device: Yap I exist"), lastPolled('\0') {}
 InputDevice::~InputDevice() {}
 
 char InputDevice::getKey() {
@@ -123,14 +123,18 @@ bool Input::isActionJustPressed(const char* tag) {
 
         inputDevices.startIteration();
         for(unsigned int i = 0; i < inputDevices.size(); i++) {
-            inputDevices.iterate()->getKey();
+            InputDevice *device = inputDevices.iterate();
+
+            Serial.println(device->hi);
+            
+            device->getKey();
         }   
 
         act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
             Action::DeviceKeyMap *curMap = act->mappings.iterate();
             Serial.println(F("Checking mappings. Current map:"));
-            Serial.print(F("Key:"));
+            Serial.print(F("Key: "));
             Serial.println(curMap->key);
             
             char key = curMap->device->getLastKey();
@@ -140,12 +144,14 @@ bool Input::isActionJustPressed(const char* tag) {
             if(key == curMap->key) {
                 Serial.print(F("Device and Key match! Return true."));
                
-
                 return true;
+            } else {
+                 Serial.print(F("Device and key don't match, return false"));
             }
         }
     } 
-    Serial.println(F("Action wasn't found."));
+
+    Serial.println(F("Action wasn't found or Mappings didn't match"));
     return false;
 }
 

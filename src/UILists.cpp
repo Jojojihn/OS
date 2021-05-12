@@ -58,14 +58,14 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
         const int totalPositions = totalCount - visibleCount + 1;
 
         const float positionPercent(float(position) / totalPositions);
-        const int handlePositionByte = round(byteRows * positionPercent);
+        const unsigned int handlePositionByte = round(byteRows * positionPercent);
 
         //+2 because byteRows doesn't include the borders at the top and bottom
         byte scrollBarBytes[byteRows + 2];
         scrollBarBytes[0] = B11111;
         scrollBarBytes[byteRows + 2 - 1] = B11111;
 
-        for(int curByte = 1; curByte < byteRows + 2 -1; curByte++) {
+        for(unsigned int curByte = 1; curByte < byteRows + 2 -1; curByte++) {
             unsigned int barPos = (curByte - 1);
             //If the current byte is covered by the scroll bar
             if(barPos >= handlePositionByte && barPos < handlePositionByte + handleSizeBytes) {
