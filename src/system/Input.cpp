@@ -121,12 +121,14 @@ bool Input::isActionJustPressed(const char* tag) {
     if(act != nullptr) {
         Serial.println("Not null.");
 
+        inputDevices.startIteration();
         for(unsigned int i = 0; i < inputDevices.size(); i++) {
-            inputDevices.get(i)->getKey();
+            inputDevices.iterate()->getKey();
         }   
 
+        act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
-            Action::DeviceKeyMap *curMap = act->mappings.get(i);
+            Action::DeviceKeyMap *curMap = act->mappings.iterate();
             Serial.println(F("Checking mappings. Current map:"));
             Serial.print(F("Key:"));
             Serial.println(curMap->key);
@@ -137,14 +139,13 @@ bool Input::isActionJustPressed(const char* tag) {
 
             if(key == curMap->key) {
                 Serial.print(F("Device and Key match! Return true."));
-                Serial.println(key);
                
 
                 return true;
             }
         }
     } 
-    Serial.println(F("No Action pressed."));
+    Serial.println(F("Action wasn't found."));
     return false;
 }
 

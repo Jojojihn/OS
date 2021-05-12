@@ -44,11 +44,16 @@ class ListElem {
 template <typename T>
 class List {
     private: 
+        ///A Pointer used to iterate through the list
+        ListElem<T> *iterator;
+
+        ///The head of the list (first element)
         ListElem<T> *head;
 
+        ///Length of the list, one element means a length of one
         unsigned int length;
 
-
+        ///Gets the ListElement at the specified index
         ListElem<T> *getElem(int index) {
             ListElem<T> *temp = nullptr;
             index = max(0, index);
@@ -64,7 +69,7 @@ class List {
         }
     
     public:
-        List() : head(nullptr), length(0) {};
+        List() : iterator(nullptr), head(nullptr), length(0) {};
 
         ~List() {
             clear(false);
@@ -78,6 +83,53 @@ class List {
         T* get(int index) {
             return getElem(index)->getValue();
         } 
+
+
+        /**
+         * Starts an iteration. Call iterate() to iterate.
+         * 
+         * @warning Only one iterator can be used on a list object at a time.
+         * 
+         * @param startIndex The index of the object to start the iteration on (Clamped to the size of the list)
+         */
+        void startIteration(unsigned int startIndex) {
+            startIndex = max(0, min(length - 1, startIndex));
+
+            if(startIndex == 0) {
+                iterator = nullptr;
+            } else {
+                iterator = getElem(startIndex - 1);
+            }
+            
+        }
+        /**
+         * Starts an iteration. Call iterate() to iterate.
+         * 
+         * @warning Only one iterator can be used on a list object at a time.
+         * 
+         */
+        void startIteration() {
+            startIteration(0);
+        }
+
+        /**
+         * This will return a Pointer to the first element of the List when called after startIteration, then the second, etc..
+         * 
+         * @return The next element, or nullptr if the end has been reached
+         */
+        T* iterate() {
+            if(iterator == nullptr) {
+                iterator = head;
+                if(iterator == nullptr) {
+                    return nullptr;
+                } else {
+                    return iterator->getValue();
+                }
+            } else {
+                iterator = iterator->getNext();
+                return iterator->getValue();
+            }    
+        }
 
 
         /**
@@ -138,14 +190,20 @@ class List {
         /**
          * Clears the list
          * 
-         * @param deleteObjects Whether to delete the objects from memory. Removing without deleting will result in a memory leak
+         * @param deleteObjects Whether to delete the objects contained in this list from memory. Removing without deleting will result in a memory leak
          *                      if you do not have another pointer to it. Deleting while still having another pointer will make that
          *                      pointer point at garbage.
          */
         void clear(bool deleteObjects) {
-            //TODO: Replace with a more efficient implementation
-            for(int i = length-1; i >= 0; i--) {
-                remove(get(i), deleteObjects);
+            ListElem<T> *tempElem = head;
+            
+            for(unsigned int i = 0; i < length; i++) {
+                ListElem<T> *nextElem = tempElem->getNext();
+                if(deleteObjects) {
+                    delete tempElem->getValue();
+                }
+                delete tempElem;
+                tempElem = nextElem;
             }
             length = 0;
         }
