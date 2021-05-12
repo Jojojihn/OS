@@ -5,6 +5,7 @@
 ProgramList::ProgramList() :
     Program("Program List", "Displays a list of programs"),
     programs(List<UIListItem>()) {
+        Serial.println("ProgramList instantiated");
     
         programs.add(new OwOProgram());
         programs.add(new OwOProgram());
