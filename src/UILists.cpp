@@ -104,7 +104,7 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
                     }
                     //If we get to the end, the character matched
                     if(i == 7) {
-                        exists == chars;
+                        exists = chars;
                     }
                 }
                 if(exists != -1) {

@@ -46,7 +46,7 @@ void Program::listOnSelect() {
         }
 
         lcd->clear();
-        for (int i = 0; i < lcd->getSize().y; i++) {
+        for (unsigned int i = 0; i < lcd->getSize().y; i++) {
             lcd->setCursor(0, i);
             lcd->print(text.substring(i * (lcd->getSize().x), i * (lcd->getSize().x) + 16));
         }
