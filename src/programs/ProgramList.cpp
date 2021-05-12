@@ -3,7 +3,7 @@
 
 
 ProgramList::ProgramList() :
-    Program(F("Program List"), F("Displays a list of programs")),
+    Program("Program List", "Displays a list of programs"),
     programs(List<UIListItem>()) {
 
         programs.add(new OwOProgram());

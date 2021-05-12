@@ -114,11 +114,12 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
 
             //If it existed, add the index in created chars to the row map
             if(exists != -1) {
-                display->write((uint8_t) createdCharacters[exists]);
+                display->write(byte(exists));
+
             } else { //Otherwise create the character, then add the index
                 display->createChar(lastCreatedCharacterIndex + 1, curBarChar);
                 lastCreatedCharacterIndex++;
-                display->write((uint8_t) createdCharacters[lastCreatedCharacterIndex]);
+                display->write(byte(lastCreatedCharacterIndex));
             }
 
             
