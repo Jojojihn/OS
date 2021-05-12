@@ -164,6 +164,8 @@ struct Action {
 
 class Input {
     public:
+        static void poll();
+
         /**
          * Whether any of the mappings of this action have been pressed.
          * 

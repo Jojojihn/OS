@@ -117,6 +117,16 @@ void Action::removeMappingsForDevice(InputDevice *device) {
     }
 }
 
+void Input::poll() {
+    inputDevices.startIteration();
+    for(unsigned int i = 0; i < inputDevices.size(); i++) {
+        InputDevice *device = inputDevices.iterate();
+
+        //Serial.println(device->hi);
+
+        device->getKey();
+    }   
+}
 
 bool Input::isActionJustPressed(const char* tag) {
     //Serial.println(F("isActionPr"));
@@ -126,14 +136,7 @@ bool Input::isActionJustPressed(const char* tag) {
         //Serial.print(F("Got action. Tag: "));
         //Serial.println(act->tag);
 
-        inputDevices.startIteration();
-        for(unsigned int i = 0; i < inputDevices.size(); i++) {
-            InputDevice *device = inputDevices.iterate();
-
-            //Serial.println(device->hi);
-
-            device->getKey();
-        }   
+        
         //Serial.println(F("Polled, iterating mappings"));
 
         act->mappings.startIteration();

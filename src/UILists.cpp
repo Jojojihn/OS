@@ -197,6 +197,7 @@ void UIList::select(LcdDisplay *display, unsigned int selIndex, bool force) {
     Serial.println(F("Select called"));
 
     selIndex = min(items->size() - 1, selIndex);
+    selIndex = max(0, selIndex);
 
     //If the new index isn't the same as before, we need to update something
     if(selIndex != state.selection || force) {
@@ -249,18 +250,20 @@ int UIList::show(LcdDisplay *display) {
     select(display, state.selection, true);
 
     Serial.println("List drawn");
-    while(!Input::isActionJustPressed("back")) {
-        
+    do { 
+        Input::poll();
+
         if(Input::isActionJustPressed("down")) {
             select(display, state.selection + 1);
 
         } else if(Input::isActionJustPressed("up")) {
             select(display, state.selection - 1);
 
-        } else if(Input::isActionJustPressed("confírm")) {
+        } else if(Input::isActionJustPressed("confirm")) {
             return state.selection;
         }
-    }
+
+    } while (!Input::isActionJustPressed("back"));
     
 
     return -1;

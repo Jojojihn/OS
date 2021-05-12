@@ -1659,8 +1659,9 @@ void loop() {
       } else if (opened == "programs") {  //Program list
         //lcd2.setCursor(0,0); //Might be redundant
         //lcd2.print("Select a program")
-        
+
         ProgramList().start();
+        opened = "Main_Menu";
         /*
         String programNames[programCount];
         for (int i = 0; i < programCount; i++) {
