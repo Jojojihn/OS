@@ -11,9 +11,9 @@
 class InputDevice {
     public:
         /**
-         * Polls the input device
+         * The key that was last pressed (since calling this function), if it is still pressed
          * 
-         * @return The key that was polled
+         * @return The key character
          */
         char getKey();
         

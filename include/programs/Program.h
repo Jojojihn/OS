@@ -23,6 +23,9 @@ class Program : public UIListItem {
          */
         void start();
 
+        /**
+        * Displays the program description on the secondary display.
+        */
         virtual void listOnSelect() override;
 
     

@@ -32,6 +32,8 @@ byte rowPins[ROWS] = {32, 33, 34, 35};
 const byte speakerPin = 8;
 const byte IRPin = 46;
 const byte RGBleds[] = {3, 4, 5};
+
+const byte SHUTDOWN_BUTTON = 2;
 //-------------------------------------------
 
 //---------------- Values -------------------
@@ -1402,8 +1404,8 @@ void setupDisplays() {
 
 void setup() {
   
-  //What is this for???
-  pinMode(2, OUTPUT);
+  //What is this for??? // Now it's for the shutdown key.
+  pinMode(SHUTDOWN_BUTTON, INPUT_PULLUP);
 
   setupDisplays();
   
@@ -1440,7 +1442,7 @@ void loop() {
         }
         if (dublicate) {
           lcd2.clear();
-          lcd2.print(F("Dublicate"));
+          lcd2.print(F("Duplicate")); //lol "Dublicate"
           lcd2.setCursor(0, 1);
           lcd2.print("assignments!");
           rgbIndicator(255, 0, 0);
@@ -1461,7 +1463,7 @@ void loop() {
           for (int i = 0; i < 7 && tempKeyAssign[i]; i++) {
             *keyRefs[i] = tempKeyAssign[i];
           }
-          char saveVars[] = {(byte) true, (byte) muted , keyLeft, keyRight, keyUp, keyDown, keyConfirm, keyESC, keyShutdown};
+          char saveVars[] = {(char) true, (char) muted , keyLeft, keyRight, keyUp, keyDown, keyConfirm, keyESC, keyShutdown};
           for (int i = 0; i < 9; i++) {
             EEPROM.update(eepromConfig[0][0] + i, saveVars[i]);
             //Serial.print("Saved '");
