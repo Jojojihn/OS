@@ -16,7 +16,8 @@
 #include "RGBLed.h"
 #include "Utils.h"
 
-#include "programs/OwOProgram.h"
+//#include "programs/OwOProgram.h"
+#include "programs/ProgramList.h"
 
 
 
@@ -1353,7 +1354,7 @@ void setupInput() {
   }
 
   
-  Input::addInputDevice(irInputDevice);
+  //Input::addInputDevice(irInputDevice);
   Input::addInputDevice(keypadInputDevice);
 
 
@@ -1658,13 +1659,16 @@ void loop() {
       } else if (opened == "programs") {  //Program list
         //lcd2.setCursor(0,0); //Might be redundant
         //lcd2.print("Select a program")
+        ProgramList().start();
+        /*
         String programNames[programCount];
         for (int i = 0; i < programCount; i++) {
           strcpy_P(buffer, (PGM_P)pgm_read_word(&(programs[i])));
           programNames[i] = buffer;
         }
-        int launch = list(programNames, programCount, false, true, &lcd, displayPrimarySize, programMenuDisplayDesc, programMenuListPos);
-
+        int launch = 1;//list(programNames, programCount, false, true, &lcd, displayPrimarySize, programMenuDisplayDesc, programMenuListPos);
+        
+        
         switch (launch) {
           case -1:  //Return to menu
             lcd.clear();
@@ -1699,6 +1703,7 @@ void loop() {
             bombMode();
             break;
         }
+        */
       }
     }
   } else {
