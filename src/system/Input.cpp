@@ -119,11 +119,12 @@ void Action::removeMappingsForDevice(InputDevice *device) {
 
 
 bool Input::isActionJustPressed(const char* tag) {
-    Serial.println(F("Check if action is pressed. Getting action:"));
+    Serial.println(F("Check if action is pressed. Getting action..."));
     Action *act = getAction(tag);
-    Serial.print(F("Got action. Action is: "));
+    
     if(act != nullptr) {
-        Serial.println("Not null.");
+        Serial.print(F("Got action. Tag: "));
+        Serial.println(act->tag);
 
         inputDevices.startIteration();
         for(unsigned int i = 0; i < inputDevices.size(); i++) {
@@ -133,16 +134,18 @@ bool Input::isActionJustPressed(const char* tag) {
 
             device->getKey();
         }   
+        Serial.println(F("Polled all devices, iterating through mappings..."));
 
         act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
             Action::DeviceKeyMap *curMap = act->mappings.iterate();
-            Serial.println(F("Checking mappings. Current map:"));
-            Serial.print(F("Key: "));
+            Serial.print(F("Mapping "));
+            Serial.print(i);
+            Serial.print(F("- Key: "));
             Serial.println(curMap->key);
             
             char key = curMap->device->getLastKey();
-            Serial.print(F("Polled key from the device in mapping:"));
+            Serial.print(F("Polled key from the device in mapping: "));
             Serial.println(key);
 
             if(key == curMap->key) {
