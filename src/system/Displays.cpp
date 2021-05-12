@@ -4,11 +4,11 @@
 
 
 
-Vector2 LcdDisplay::getSize() {
+Vector2UI LcdDisplay::getSize() {
     return size;
 }
 
-LcdDisplay::LcdDisplay(int sizeX, int sizeY) : size(Vector2(sizeX, sizeY)) {}
+LcdDisplay::LcdDisplay(int sizeX, int sizeY) : size(Vector2UI(sizeX, sizeY)) {}
 
 LcdDisplay::~LcdDisplay() {}
 
@@ -47,7 +47,7 @@ LiquidCrystal *LiquidCrystalDisplay::getLcd() {
 }
 
 void LiquidCrystalDisplay::begin(uint8_t cols, uint8_t rows, uint8_t charsize) {
-    size = Vector2(cols, rows);
+    size = Vector2UI(cols, rows);
     lcd.begin(cols, rows, charsize);
     lcd.clear();
 }

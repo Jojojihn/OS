@@ -14,12 +14,13 @@ class Color {
         
 };
 
-struct Vector2 {
-    int x;
-    int y;
+
+struct Vector2UI {
+    unsigned int x;
+    unsigned int y;
     
-    Vector2(int x, int y);
-    Vector2();
+    Vector2UI(unsigned int x, unsigned int y);
+    Vector2UI();
 };
 
 

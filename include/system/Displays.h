@@ -18,7 +18,7 @@ class LcdDisplay : public Print {
         /**
          * @return The size of the display in characters.
          */
-        Vector2 getSize();
+        Vector2UI getSize();
 
 
         /**
@@ -50,7 +50,7 @@ class LcdDisplay : public Print {
 
     protected:
         LcdDisplay(int sizeX, int sizeY);
-        Vector2 size;
+        Vector2UI size;
 
     private:
     
