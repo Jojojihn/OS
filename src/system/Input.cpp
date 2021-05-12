@@ -126,7 +126,7 @@ bool Input::isActionJustPressed(const char* tag) {
             InputDevice *device = inputDevices.iterate();
 
             Serial.println(device->hi);
-            
+
             device->getKey();
         }   
 
@@ -146,7 +146,7 @@ bool Input::isActionJustPressed(const char* tag) {
                
                 return true;
             } else {
-                 Serial.print(F("Device and key don't match, return false"));
+                 Serial.println(F("Device and key don't match, return false"));
             }
         }
     } 

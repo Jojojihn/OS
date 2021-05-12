@@ -1358,32 +1358,32 @@ void setupInput() {
 
 
   Input::addAction("up")
-    ->addMapping(irInputDevice, '2')
+    //->addMapping(irInputDevice, '2')
     ->addMapping(keypadInputDevice, '2');
 
   Input::addAction("down")
-    ->addMapping(irInputDevice, '8')
+    //->addMapping(irInputDevice, '8')
     ->addMapping(keypadInputDevice, '8');
 
   Input::addAction("left")
-    ->addMapping(irInputDevice, '4')
+    //->addMapping(irInputDevice, '4')
     ->addMapping(keypadInputDevice, '4');
 
   Input::addAction("right")
-    ->addMapping(irInputDevice, '6')
+    //->addMapping(irInputDevice, '6')
     ->addMapping(keypadInputDevice, '6');
 
   Input::addAction("confirm")
-    ->addMapping(irInputDevice, '5')
+    //->addMapping(irInputDevice, '5')
     ->addMapping(keypadInputDevice, '5');
 
   Input::addAction("back")
-    ->addMapping(irInputDevice, '*')
+    //->addMapping(irInputDevice, '*')
     ->addMapping(keypadInputDevice, '*');
 
   
   Input::addAction("shutdown")
-    ->addMapping(irInputDevice, '#')
+    //->addMapping(irInputDevice, '#')
     ->addMapping(keypadInputDevice, '#');
 
   
