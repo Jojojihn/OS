@@ -129,8 +129,9 @@ void Displays::setSecondaryDisplay(LcdDisplay *display) {
 }
 
 void Displays::clearAllDisplays() {
+    displays.startIteration();
     for(unsigned int i = 0; i < displays.size(); i++) {
-        displays.get(i)->clear();
+        displays.iterate()->clear();
     }
 }
 
