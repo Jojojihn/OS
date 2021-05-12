@@ -18,7 +18,7 @@ void OwOProgram::loop() {
         delay(1);
         lcd2->print("UwU");
         lcd->print("UwU");
-        delay(50);
+        delay(1);
     }  
     running = false;
 }

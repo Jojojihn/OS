@@ -119,46 +119,46 @@ void Action::removeMappingsForDevice(InputDevice *device) {
 
 
 bool Input::isActionJustPressed(const char* tag) {
-    Serial.println(F("isActionPr"));
+    //Serial.println(F("isActionPr"));
     Action *act = getAction(tag);
     
     if(act != nullptr) {
-        Serial.print(F("Got action. Tag: "));
-        Serial.println(act->tag);
+        //Serial.print(F("Got action. Tag: "));
+        //Serial.println(act->tag);
 
         inputDevices.startIteration();
         for(unsigned int i = 0; i < inputDevices.size(); i++) {
             InputDevice *device = inputDevices.iterate();
 
-            Serial.println(device->hi);
+            //Serial.println(device->hi);
 
             device->getKey();
         }   
-        Serial.println(F("Polled, iterating mappings"));
+        //Serial.println(F("Polled, iterating mappings"));
 
         act->mappings.startIteration();
         for(unsigned int i = 0; i < act->mappings.size(); i++) {
             Action::DeviceKeyMap *curMap = act->mappings.iterate();
-            Serial.print(F("Mapping "));
-            Serial.print(i);
-            Serial.print(F("- Key: "));
-            Serial.println(curMap->key);
+            //Serial.print(F("Mapping "));
+            //Serial.print(i);
+            //Serial.print(F("- Key: "));
+            //Serial.println(curMap->key);
             
             char key = curMap->device->getLastKey();
-            Serial.print(F("device key in mapping: "));
-            Serial.println(key);
+            //Serial.print(F("device key in mapping: "));
+            //Serial.println(key);
 
             if(key == curMap->key) {
-                Serial.print(F("Device and Key match! Return true."));
+                //Serial.print(F("Device and Key match! Return true."));
                
                 return true;
             } else {
-                 Serial.println(F("Device or key don't match"));
+                 //Serial.println(F("Device or key don't match"));
             }
         }
     } 
 
-    Serial.println(F("Action not found or no mapping match"));
+    //Serial.println(F("Action not found or no mapping match"));
     return false;
 }
 
