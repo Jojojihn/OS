@@ -28,6 +28,8 @@ class UIListItem {
     private:
         unsigned int scrollIndex;
 
+        void scroll(unsigned int amount = 1);
+
         friend class UIList;
 };
 
@@ -42,12 +44,12 @@ class UIList {
          * 
          * @param items A Pointer to a List of UIListItems. Make sure this list doesn't go out of scope within the lifetime of this object.
          * 
-         * @param size The size of the item array @warning Size must never be bigger than the actual size of the items array, otherwise it will lead to undefined behaviour
-         * 
          * @param infinite Whether this list is infinite (Wrapping around)
          * 
+         * @note Infinite currently has no effect
+         * 
          */
-        UIList(List<UIListItem> *items, unsigned int size, bool infinite = false);
+        UIList(List<UIListItem> *items, bool infinite = false);
 
         /**
          * Creates a new UIList. Use "show" to show the list.
@@ -57,6 +59,8 @@ class UIList {
          * @param size The size of the item array @warning Size must never be bigger than the actual size of the items array, otherwise it will lead to undefined behaviour
          * 
          * @param infinite Whether this list is infinite (Wrapping around)
+         * 
+         * @note Infinite currently has no effect
          */
         UIList(String items[], unsigned int size, bool infinite = false);
 
@@ -71,18 +75,7 @@ class UIList {
         int show(LcdDisplay *display);
 
 
-        /**
-         * Creates a scrollable list on the UI. The function will return once an item has been selected.
-         * 
-         * @param items The items that are going to be displayed in the list
-         * 
-         * @param infiniteScroll Wether this list will scroll infinitely, repeating the elements
-         * 
-         * @param display The display to display the list on
-         * 
-         * @param startingPos The index of the element this list should start on
-         */
-        static int scrolledList(UIListItem *items[], bool infiniteScroll = false, LcdDisplay *display = Displays::getPrimaryDisplay());
+    
 
     
 
@@ -122,9 +115,6 @@ class UIList {
 
         ///Whether to destroy the list when the object gets destructed
         bool destroyList;
-
-        ///The amount of elements in this list
-        unsigned int length;
 
         ///All the items in this list (Pointer to array of pointers)
         List<UIListItem> *items;

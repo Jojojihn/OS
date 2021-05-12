@@ -9,6 +9,11 @@ UIListItem::UIListItem() : scrollIndex(0) {}
 
 void UIListItem::listOnSelect() {}
 
+void UIListItem::scroll(unsigned int amount) {
+    scrollIndex += amount;
+    scrollIndex %= listTitle.length();
+}
+
 
 
 UIList::ListPos::ListPos() : index(0), selection(0) {}
@@ -21,17 +26,15 @@ UIList::~UIList() {
     }
 }
 
-UIList::UIList(List<UIListItem> *items, unsigned int size, bool infinite) :
+UIList::UIList(List<UIListItem> *items, bool infinite) :
     destroyList(false),
-    length(size),
     items(items),
     infinite(infinite),
     state(ListPos()) {}
 
 
-UIList::UIList(String items[], unsigned int size, bool infinite) :
+UIList::UIList(String items[], unsigned int size,  bool infinite) :
     destroyList(true), 
-    length(size),
     infinite(infinite),
     state(ListPos())
     {
@@ -44,6 +47,84 @@ UIList::UIList(String items[], unsigned int size, bool infinite) :
 
 
 void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned int visibleCount, unsigned int position) {
+    if(totalCount > 0) {
+        //Eight bytes in every char row, one space between every character, first and last byte are scroll bar borders
+        const unsigned int byteRows = display->getSize().y * 8 + (display->getSize().y -1) - 2; //33 on 4 height display
+
+
+        const float handleSizePercent = float(visibleCount)/float(totalCount);
+        const int handleSizeBytes = max(1, round(byteRows * handleSizePercent));
+
+        const int totalPositions = totalCount - visibleCount + 1;
+
+        const float positionPercent(float(position) / totalPositions);
+        const int handlePositionByte = round(byteRows * positionPercent);
+
+        //+2 because byteRows doesn't include the borders at the top and bottom
+        byte scrollBarBytes[byteRows + 2];
+        scrollBarBytes[0] = B11111;
+        scrollBarBytes[byteRows + 2 - 1] = B11111;
+
+        for(int curByte = 1; curByte < byteRows + 2 -1; curByte++) {
+            unsigned int barPos = (curByte - 1);
+            //If the current byte is covered by the scroll bar
+            if(barPos >= handlePositionByte && barPos < handlePositionByte + handleSizeBytes) {
+                scrollBarBytes[curByte] = B11111;
+            } else {
+                scrollBarBytes[curByte] = B10001;
+            }
+        }
+
+        //All different custom characters that are needed for the scrollbar, theoretical maximum of 6:
+        //2 for the borders top and bottom
+        //1 For an empty section
+        //1 For a fully filled section
+        //2 For the bottom or the top part of the scroll handle
+        byte createdCharacters[display->getSize().y][8];
+        int lastCreatedCharacterIndex = -1;
+
+
+        unsigned int posInBarBytes = 0;
+        for(unsigned int barChar = 0; barChar < display->getSize().y; barChar++) {
+            byte curBarChar[8];
+
+            for(unsigned int i = 0; i < 8; i++) {
+                curBarChar[i] = scrollBarBytes[posInBarBytes];
+                posInBarBytes++;
+            }
+            posInBarBytes++;
+
+            //Check if character already created;
+            int exists = -1;
+            for(int chars = 0; chars < lastCreatedCharacterIndex + 1; chars++) {
+
+                for(int i = 0; i < 8; i++) {
+                    if(createdCharacters[chars][i] != curBarChar[i]) {
+                        break;
+                    }
+                    //If we get to the end, the character matched
+                    if(i == 7) {
+                        exists == chars;
+                    }
+                }
+                if(exists != -1) {
+                    break;
+                }
+            }
+
+            //If it existed, add the index in created chars to the row map
+            if(exists != -1) {
+                display->write((uint8_t) createdCharacters[exists]);
+            } else { //Otherwise create the character, then add the index
+                display->createChar(lastCreatedCharacterIndex + 1, curBarChar);
+                lastCreatedCharacterIndex++;
+                display->write((uint8_t) createdCharacters[lastCreatedCharacterIndex]);
+            }
+
+            
+        }
+
+    }
 
 }
 
@@ -73,9 +154,9 @@ void UIList::drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, u
         display->print(displayedText);
         if(oversized) {
             byte ellipsis[8];
-            ellipsis [7] = B10101;
-            display->createChar(4, ellipsis);
-            display->write(4);
+            ellipsis[6] = B10101;
+            display->createChar(6, ellipsis);
+            display->write(6);
         } else {
             unsigned int emptyCols = endIndex - (startIndex + displayedText.length() -1);
             
@@ -158,7 +239,7 @@ int UIList::show(LcdDisplay *display) {
     redraw(display);
     select(display, state.selection, true);
 
-    
+
     while(!Input::isActionJustPressed("back")) {
         
         if(Input::isActionJustPressed("down")) {
