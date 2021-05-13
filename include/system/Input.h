@@ -174,6 +174,13 @@ class Input {
          * @return True when the action is pressed. If the action is not pressed or not found, false.
          */
         static bool isActionJustPressed(const char* tag);
+
+        /**
+         * Polls all input devices and returns the first key found
+         * 
+         * @return The key
+         */
+        static char getKey();
         
         /**
          * Adds an input device

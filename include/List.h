@@ -228,7 +228,7 @@ class List {
          * 
          * @return The size of the list
          */
-        unsigned int size() {
+        int size() {
             return length;
         }
 };

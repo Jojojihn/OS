@@ -12,12 +12,13 @@ class Color {
     public:
         Color(byte r, byte g, byte b);
         
+        byte &operator[](int i);
 };
 
 
 struct Vector2UI {
-    unsigned int x;
-    unsigned int y;
+    int x;
+    int y;
     
     Vector2UI(unsigned int x, unsigned int y);
     Vector2UI();

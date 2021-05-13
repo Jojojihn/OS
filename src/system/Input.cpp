@@ -35,7 +35,7 @@ IRrecvInputDevice::IRrecvInputDevice(unsigned int recvPin) : irReceiver(IRrecv(r
 void IRrecvInputDevice::addMap(unsigned long int code, char key) {
     CodeMap *newMap = new CodeMap {code, key};
     mappings.startIteration();
-    for(unsigned int i = 0; i < mappings.size(); i++) {
+    for(int i = 0; i < mappings.size(); i++) {
         CodeMap *curMap = mappings.iterate();
         if(curMap->code == code) {
             curMap->character = key;
@@ -50,7 +50,7 @@ char IRrecvInputDevice::_getKey() {
 
     if(irReceiver.decode(&results)) {
         mappings.startIteration();
-        for(unsigned int i = 0; i < mappings.size(); i++) {
+        for(int i = 0; i < mappings.size(); i++) {
             CodeMap *cMap = mappings.iterate();
 
             if(cMap->code == results.value) {
@@ -82,7 +82,7 @@ Action *Action::addMapping(InputDevice *device, char key) {
     Input::addInputDevice(device);
 
     mappings.startIteration();
-    for(unsigned int i = 0; i < mappings.size(); i++) {
+    for(int i = 0; i < mappings.size(); i++) {
         DeviceKeyMap *curMap = mappings.iterate();
         if(curMap->device == device && curMap->key == key) {
             return this;
@@ -95,7 +95,7 @@ Action *Action::addMapping(InputDevice *device, char key) {
 
 void Action::removeMapping(InputDevice *device, char key) {
     mappings.startIteration();
-    for(unsigned int i = 0; i < mappings.size(); i++) {
+    for(int i = 0; i < mappings.size(); i++) {
         DeviceKeyMap *curMap = mappings.iterate();
         if(curMap->device == device && curMap->key == key) {
             mappings.remove(curMap, true);
@@ -119,10 +119,8 @@ void Action::removeMappingsForDevice(InputDevice *device) {
 
 void Input::poll() {
     inputDevices.startIteration();
-    for(unsigned int i = 0; i < inputDevices.size(); i++) {
+    for(int i = 0; i < inputDevices.size(); i++) {
         InputDevice *device = inputDevices.iterate();
-
-        //Serial.println(device->hi);
 
         device->getKey();
     }   
@@ -140,7 +138,7 @@ bool Input::isActionJustPressed(const char* tag) {
         //Serial.println(F("Polled, iterating mappings"));
 
         act->mappings.startIteration();
-        for(unsigned int i = 0; i < act->mappings.size(); i++) {
+        for(int i = 0; i < act->mappings.size(); i++) {
             Action::DeviceKeyMap *curMap = act->mappings.iterate();
             //Serial.print(F("Mapping "));
             //Serial.print(i);
@@ -166,6 +164,19 @@ bool Input::isActionJustPressed(const char* tag) {
     return false;
 }
 
+char Input::getKey() {
+    poll();
+    inputDevices.startIteration();
+    for(int i = 0; i < inputDevices.size(); i++) {
+        char key = inputDevices.iterate()->getLastKey();
+        if(key != '\0') {
+            return key;
+        }
+    }
+
+    return '\0';
+}
+
 void Input::addInputDevice(InputDevice* device) {
     if(!inputDevices.contains(device)) {
         inputDevices.add(device);
@@ -174,7 +185,7 @@ void Input::addInputDevice(InputDevice* device) {
 
 void Input::removeInputDevice(InputDevice* device, bool deleteObject) {
     actions.startIteration();
-    for(unsigned int i = 0; i < actions.size(); i++) {
+    for(int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
         curAct->removeMappingsForDevice(device);
     }
@@ -186,7 +197,7 @@ Action *Input::getAction(const char* tag) {
     //Serial.println(tag);
 
     actions.startIteration();
-    for(unsigned int i = 0; i < actions.size(); i++) {
+    for(int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
         //Serial.print(F("Comparing with: "));
         //Serial.println(curAct->tag);
@@ -206,7 +217,7 @@ Action *Input::addAction(const char* tag) {
     Serial.println(tag);
 
     actions.startIteration();
-    for(unsigned int i = 0; i < actions.size(); i++) {
+    for(int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
         if(strcmp(curAct->tag, tag) == 0) {
             Serial.println(F("Found existing action by the same tag, returning..."));
@@ -229,7 +240,7 @@ Action *Input::addAction(const char* tag) {
 void Input::removeAction(const char* tag) {
 
     actions.startIteration();
-    for(unsigned int i = 0; i < actions.size(); i++) {
+    for(int i = 0; i < actions.size(); i++) {
         Action *curAct = actions.iterate();
         if(strcmp(curAct->tag, tag) == 0) {
             //curAct->clearMappings(); //this is done in the destructor of Action
