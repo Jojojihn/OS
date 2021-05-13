@@ -16,12 +16,11 @@
 #include "RGBLed.h"
 #include "Utils.h"
 
-//#include "programs/OwOProgram.h"
 #include "programs/ProgramList.h"
 
 
 
-
+#define SIMUL
 
 
 
@@ -138,8 +137,13 @@ IRrecv irrecv(IRPin);
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 LiquidCrystalDisplay lcd(22, 23, 24, 25, 26, 27);
-LiquidCrystalDisplay_I2C lcd2(0x27, 16, 2);
-//LiquidCrystalDisplay lcd2(36, 37, 38, 39, 40, 41);
+
+
+#ifdef SIMUL
+  LiquidCrystalDisplay lcd2(36, 37, 38, 39, 40, 41);
+#else
+  LiquidCrystalDisplay_I2C lcd2(0x27, 16, 2);
+#endif
 
 RGBLed rgbLed = RGBLed(RGBleds[0], RGBleds[1], RGBleds[2]);
 BigNumbers bigNum(lcd.getLcd());
@@ -284,7 +288,9 @@ void bootup() {
   lcd.write(byte(6));
   lcd.write(byte(7));
   delay(10);
+  #ifndef SIMUL
   lcd2.setBacklightEnabled(true);
+  #endif
   for (int i = 0; i < 20; i++) {
     lcd.setCursor(i, 0);
     lcd.print("-");
@@ -670,7 +676,9 @@ void shutDown() {
   lcd2.clear();
   if (selOption) {
     isRunning = false;
-    lcd2.setBacklightEnabled(false);
+    #ifndef SIMUL
+    lcd2.setBacklightEnabled(true);
+    #endif
   } else {
     opened = "Main_Menu";
     loadMainMenu();
@@ -1396,9 +1404,13 @@ void setupDisplays() {
   lcd.begin(20, 4);
   Displays::setPrimaryDisplay(&lcd);
 
+
+  #ifndef SIMUL
   lcd2.init();
   lcd2.setBacklightEnabled(false);
-  //lcd2.begin(16, 2);
+  #else
+  lcd2.begin(16, 2);
+  #endif
   Displays::setSecondaryDisplay(&lcd2);
   
 
