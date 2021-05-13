@@ -8,13 +8,21 @@ ProgramList::ProgramList() :
         Serial.println("ProgramList instantiated");
     
         programs.add(new OwOProgram());
-        programs.add(new OwOProgram());
+        programs.add(new RGBLedConfig());
         programs.add(new InputTester());
+        programs.add(new OwOProgram());
+        programs.add(new RGBLedConfig());
         programs.add(new InputTester());
         programs.add(new OwOProgram());
-        programs.add(new OwOProgram());
+        programs.add(new RGBLedConfig());
+        programs.add(new InputTester());
+        //programs.add(new InputTester());
+        //programs.add(new OwOProgram());
+        //programs.add(new OwOProgram());
+       
+      
         
-        programlist = new UIList(&programs, false);
+        programlist = new UIList(&programs);
     }
 
 
