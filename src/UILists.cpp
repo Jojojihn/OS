@@ -67,16 +67,16 @@ void UIList::scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned in
 
         //+2 because byteRows doesn't include the borders at the top and bottom
         byte scrollBarBytes[byteRows + 2];
-        scrollBarBytes[0] = B11111;
-        scrollBarBytes[byteRows + 2 - 1] = B11111;
+        scrollBarBytes[0] = B11100;
+        scrollBarBytes[byteRows + 2 - 1] = B11100;
 
         for(unsigned int curByte = 1; curByte < byteRows + 2 - 1; curByte++) {
             unsigned int barPos = (curByte - 1);
             //If the current byte is covered by the scroll bar
             if(barPos >= handlePositionByte && barPos < handlePositionByte + handleSizeBytes) {
-                scrollBarBytes[curByte] = B11111;
+                scrollBarBytes[curByte] = B11100;
             } else {
-                scrollBarBytes[curByte] = B10001;
+                scrollBarBytes[curByte] = B10100;
             }
 
 
