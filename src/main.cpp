@@ -139,6 +139,7 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 LiquidCrystalDisplay lcd(22, 23, 24, 25, 26, 27);
 LiquidCrystalDisplay_I2C lcd2(0x27, 16, 2);
+//LiquidCrystalDisplay lcd2(36, 37, 38, 39, 40, 41);
 
 RGBLed rgbLed = RGBLed(RGBleds[0], RGBleds[1], RGBleds[2]);
 BigNumbers bigNum(lcd.getLcd());
@@ -154,7 +155,7 @@ KeypadInputDevice *keypadInputDevice = new KeypadInputDevice(makeKeymap(keys), r
 //-------------------------------------------
 char inputKey() {
   decode_results results;
-  char key = keypad.getKey();
+  char key = Input::getKey();
   char returnChar = 0;
   if (key) {
     returnChar = key;
@@ -1397,6 +1398,7 @@ void setupDisplays() {
 
   lcd2.init();
   lcd2.setBacklightEnabled(false);
+  //lcd2.begin(16, 2);
   Displays::setSecondaryDisplay(&lcd2);
   
 
@@ -1430,7 +1432,6 @@ void setup() {
 
 void loop() {
   char key = inputKey();//keypad.getKey();
-  inputKey();
   if (isRunning) {
     if (key == keyESC) {
       boolean dublicate = false;
@@ -1662,6 +1663,9 @@ void loop() {
 
         ProgramList().start();
         opened = "Main_Menu";
+        loadMainMenu();
+        mainMenu();
+
         /*
         String programNames[programCount];
         for (int i = 0; i < programCount; i++) {
