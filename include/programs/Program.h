@@ -32,8 +32,14 @@ class Program : public UIListItem {
         Program(String name, String description);
 
     protected:
+        ///Called every time the program starts
+        virtual void onStart();
+
         ///Loops while running = true. Set running to false to stop the loop.
         virtual void loop() = 0;
+
+        
+
 
     private:
         Program();

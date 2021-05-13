@@ -5,11 +5,15 @@ Program::Program(String name, String description) : name(name), description(desc
     listTitle = name;
 }
 
+
+void Program::onStart() {}
+
 void Program::start() {
     Serial.println(F("A program has started"));
     
     Displays::clearAllDisplays();
     running = true;
+    onStart();
     while(running) {
         loop();
     }
@@ -48,7 +52,7 @@ void Program::listOnSelect() {
         }
 
         lcd->clear();
-        for (unsigned int i = 0; i < lcd->getSize().y; i++) {
+        for (int i = 0; i < lcd->getSize().y; i++) {
             lcd->setCursor(0, i);
             lcd->print(text.substring(i * (lcd->getSize().x), i * (lcd->getSize().x) + 16));
         }
