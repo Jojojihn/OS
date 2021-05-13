@@ -49,7 +49,7 @@ class UIList {
          * @note Infinite currently has no effect
          * 
          */
-        UIList(List<UIListItem> *items, bool infinite = false);
+        UIList(List<UIListItem> *items, bool scrollbar = true);
 
         /**
          * Creates a new UIList. Use "show" to show the list.
@@ -62,7 +62,7 @@ class UIList {
          * 
          * @note Infinite currently has no effect
          */
-        UIList(String items[], unsigned int size, bool infinite = false);
+        UIList(String items[], unsigned int size, bool scrollbar = true);
 
 
         /**
@@ -74,10 +74,7 @@ class UIList {
          */
         int show(LcdDisplay *display);
 
-
-    
-
-    
+        void setScrollBarEnabled(bool enable);
 
 
     private:
@@ -100,18 +97,19 @@ class UIList {
          */
         void scrollbar(LcdDisplay *display, unsigned int totalCount, unsigned int visibleCount, unsigned int position);
 
-        void drawLine(LcdDisplay *display, UIListItem *item, unsigned int row, unsigned int startIndex, unsigned int endIndex);
+        void drawLine(LcdDisplay *display, UIListItem *item, int row, int startIndex, int endIndex);
 
         void redraw(LcdDisplay *display);
 
-        void select(LcdDisplay *display, unsigned int selIndex, bool force = false);
+        void select(LcdDisplay *display, int selIndex, bool force = false);
+
 
         struct ListPos {
             ///The index of the first item in the list
-            unsigned int index;
+            int index;
 
             ///The index of the selected item in the list
-            unsigned int selection;
+            int selection;
 
             ListPos();
         };
@@ -122,8 +120,11 @@ class UIList {
         ///All the items in this list (Pointer to array of pointers)
         List<UIListItem> *items;
 
-        ///Whether this list is infinite (wraps around)
-        bool infinite;
+        ///Whether this list displays a scrollbar
+        bool displayScrollbar;
+
+        ///The display this list is visible on, or nullptr if it isn't visible (visible means .show() was called and not exited)
+        LcdDisplay *shown;
     
         ///The state of the list (Position & Selection)
         ListPos state;
