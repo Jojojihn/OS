@@ -20,7 +20,8 @@
 
 
 
-#define SIMUL
+//#define SIMUL
+//#define SKIP_BOOT
 
 
 
@@ -243,6 +244,11 @@ void mainMenu() {
 }
 
 void bootup() {
+  isRunning = true;
+  opened = "Main_Menu";
+  mainMenuSelected = 0;
+
+#ifndef SKIP_BOOT
   byte OLinksOben[8] = {B00000, B00011, B00111, B01110, B11100, B11000, B11000, B11000};
   byte ORechtsOben[8] = {B00000, B11000, B11100, B01110, B00111, B00011, B00011, B00011};
   byte ORechtsUnten[8] = {B00011, B00011, B00011, B00111, B01110, B11100, B11000, B00000};
@@ -266,9 +272,7 @@ void bootup() {
     delay(333);
     //tone(speakerPin, 932.328, 888);
   }
-  isRunning = true;
-  opened = "Main_Menu";
-  mainMenuSelected = 0;
+  
   lcd.createChar(0, OLinksOben);
   lcd.createChar(1, ORechtsOben);
   lcd.createChar(2, OUntenLinks);
@@ -305,6 +309,7 @@ void bootup() {
   lcd.clear();
   lcd2.clear();
   delay(1);
+#endif
   loadMainMenu();
 }
 
@@ -414,12 +419,12 @@ unsigned long lastMillis;
 boolean rev = false;
 boolean gotoBlock = false;
 
-byte flipByte(byte input) { //something something bitwise
+byte flipByte(byte input) { //something something bitwise //I now understand this
   char r = 0;
   for (byte i = 0; i < 5; i++) {
-    r <<= 1;
-    r |= input & 1;
-    input >>= 1;
+    r <<= 1; //make space for new bit, shifting bits to the left
+    r |= input & 1; //set new bit to least significant bit of input
+    input >>= 1; //Move to the next bit in input (by shifting the least significant one out of existance)
   }
   return r;
 }
@@ -543,7 +548,7 @@ void shutDown() {
   const int FRAME_1_SIZ = 4; //The amount of spaces used by this frame
   const int FRAME_1_DAT = 1; //The amount of bytes used by this frame //redundant
   byte frame1Byt[FRAME_1_DAT][8] = {{B00000, B00000, B00000, B00000, B00011, B00111, B01111, B01111}}; //All the required bytes to construct this frame
-  int frame1Arr[FRAME_1_SIZ][2] = {{0, 0}, {0, 1}, {0, 2}, {0, 3}}; //The arrangement and IRP method to use for each byte in this frame
+  int frame1Arr[FRAME_1_SIZ][2] = {{0, 0}, {0, 1}, {0, 2}, {0, 3}}; //0: Index of byte in frameXByt, 1:The IRP method. The arrangement and IRP method to use for each byte in this frame
   // ------- //
 
   // Frame 2 //
@@ -1402,8 +1407,6 @@ void setupInput() {
 
 void setupDisplays() {
   lcd.begin(20, 4);
-  Displays::setPrimaryDisplay(&lcd);
-
 
   #ifndef SIMUL
   lcd2.init();
@@ -1411,6 +1414,8 @@ void setupDisplays() {
   #else
   lcd2.begin(16, 2);
   #endif
+
+  Displays::setPrimaryDisplay(&lcd);
   Displays::setSecondaryDisplay(&lcd2);
   
 

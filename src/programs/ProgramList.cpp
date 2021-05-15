@@ -16,9 +16,14 @@ ProgramList::ProgramList() :
         programs.add(new OwOProgram());
         programs.add(new RGBLedConfig());
         programs.add(new InputTester());
-        //programs.add(new InputTester());
-        //programs.add(new OwOProgram());
-        //programs.add(new OwOProgram());
+        programs.add(new OwOProgram());
+        programs.add(new RGBLedConfig());
+        programs.add(new InputTester());
+        programs.add(new RGBLedConfig());
+        programs.add(new InputTester());
+        programs.add(new RGBLedConfig());
+        programs.add(new InputTester());
+        
        
       
         
