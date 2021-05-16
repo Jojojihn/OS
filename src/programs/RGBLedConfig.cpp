@@ -10,9 +10,11 @@ RGBLedConfig::RGBLedConfig() :
     String optionList[] = {"Set RGB values", "Colors", "Cycle", "Turn off"};
     mainList = new UIList(optionList, 4, false);
 
-
-
  };
+
+ RGBLedConfig::~RGBLedConfig() {
+     delete mainList;
+ }
     
 
 

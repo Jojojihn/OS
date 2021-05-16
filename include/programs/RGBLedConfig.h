@@ -14,6 +14,7 @@
 class RGBLedConfig : public Program {
     public:
         RGBLedConfig();
+        ~RGBLedConfig();
 
     protected:
         void onStart() override;
